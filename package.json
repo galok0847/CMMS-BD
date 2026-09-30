@@ -1,13 +1,17 @@
 {
   "name": "cmms-bd",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "CMMS untuk penginputan Unit Breakdown",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron ."
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "cmms",
+    "maintenance",
+    "breakdown"
+  ],
+  "author": "galok0847",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
