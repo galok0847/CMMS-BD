@@ -237,7 +237,7 @@
             </li>
 
             <li>
-                <button>
+                <button onclick="location.href='breakdown.html'">
                     🔧 Breakdown
                 </button>
             </li>
@@ -268,7 +268,7 @@
         </div>
 
 
-        <!-- FORM -->
+        <!-- FORM TAMBAH UNIT -->
         <div class="form-box">
 
             <h2>Tambah Unit</h2>
@@ -277,6 +277,7 @@
 
                 <div class="field">
                     <label>Unit No</label>
+
                     <input
                         type="text"
                         id="unitNo"
@@ -284,14 +285,17 @@
                     >
                 </div>
 
+
                 <div class="field">
                     <label>Model</label>
+
                     <input
                         type="text"
                         id="model"
                         placeholder="Contoh: EX2000"
                     >
                 </div>
+
 
                 <div class="field">
                     <label>Type BD</label>
@@ -314,6 +318,7 @@
 
                 </div>
 
+
                 <div class="field">
                     <label>Status</label>
 
@@ -333,6 +338,7 @@
 
             </div>
 
+
             <div class="button-row">
 
                 <button class="btn" onclick="addUnit()">
@@ -344,7 +350,7 @@
         </div>
 
 
-        <!-- TABLE -->
+        <!-- TABEL UNIT -->
         <div class="table-box">
 
             <h2>Daftar Unit</h2>
@@ -389,75 +395,174 @@
 
 <script>
 
-    let units = [];
+    /*
+     * DATA MASTER UNIT
+     *
+     * Data disimpan di localStorage browser.
+     * Jadi data tidak hilang ketika halaman
+     * direfresh atau ditutup.
+     */
 
+    let units =
+        JSON.parse(
+            localStorage.getItem("cmms_units")
+        ) || [];
+
+
+    /*
+     * TAMBAH UNIT
+     */
 
     function addUnit() {
 
         const unitNo =
-            document.getElementById("unitNo").value.trim();
+            document
+                .getElementById("unitNo")
+                .value
+                .trim();
 
         const model =
-            document.getElementById("model").value.trim();
+            document
+                .getElementById("model")
+                .value
+                .trim();
 
         const typeBD =
-            document.getElementById("typeBD").value;
+            document
+                .getElementById("typeBD")
+                .value;
 
         const status =
-            document.getElementById("status").value;
+            document
+                .getElementById("status")
+                .value;
 
 
-        if (!unitNo || !model || !typeBD) {
+        /*
+         * VALIDASI
+         */
 
-            alert("Unit No, Model, dan Type BD wajib diisi.");
+        if (
+            !unitNo ||
+            !model ||
+            !typeBD
+        ) {
+
+            alert(
+                "Unit No, Model, dan Type BD wajib diisi."
+            );
 
             return;
         }
 
 
+        /*
+         * CEK UNIT DUPLIKAT
+         */
+
         const existing =
             units.some(
                 unit =>
-                unit.unitNo.toLowerCase() === unitNo.toLowerCase()
+                    unit.unitNo.toLowerCase()
+                    ===
+                    unitNo.toLowerCase()
             );
 
 
         if (existing) {
 
-            alert("Unit No sudah terdaftar.");
+            alert(
+                "Unit No sudah terdaftar."
+            );
 
             return;
         }
 
 
+        /*
+         * MASUKKAN DATA
+         */
+
         units.push({
 
             unitNo: unitNo,
+
             model: model,
+
             typeBD: typeBD,
+
             status: status
 
         });
 
 
+        /*
+         * SIMPAN KE LOCAL STORAGE
+         */
+
+        localStorage.setItem(
+            "cmms_units",
+            JSON.stringify(units)
+        );
+
+
+        /*
+         * TAMPILKAN DATA
+         */
+
         renderUnits();
 
 
-        document.getElementById("unitNo").value = "";
-        document.getElementById("model").value = "";
-        document.getElementById("typeBD").value = "";
-        document.getElementById("status").value = "Active";
+        /*
+         * KOSONGKAN FORM
+         */
+
+        document
+            .getElementById("unitNo")
+            .value = "";
+
+        document
+            .getElementById("model")
+            .value = "";
+
+        document
+            .getElementById("typeBD")
+            .value = "";
+
+        document
+            .getElementById("status")
+            .value = "Active";
 
     }
 
 
+    /*
+     * HAPUS UNIT
+     */
+
     function deleteUnit(index) {
 
         if (
-            confirm("Yakin ingin menghapus unit ini?")
+            confirm(
+                "Yakin ingin menghapus unit ini?"
+            )
         ) {
 
-            units.splice(index, 1);
+            units.splice(
+                index,
+                1
+            );
+
+
+            /*
+             * UPDATE LOCAL STORAGE
+             */
+
+            localStorage.setItem(
+                "cmms_units",
+                JSON.stringify(units)
+            );
+
 
             renderUnits();
 
@@ -466,17 +571,32 @@
     }
 
 
+    /*
+     * TAMPILKAN DATA UNIT
+     */
+
     function renderUnits() {
 
         const table =
-            document.getElementById("unitTable");
+            document.getElementById(
+                "unitTable"
+            );
 
 
-        if (units.length === 0) {
+        /*
+         * JIKA BELUM ADA DATA
+         */
+
+        if (
+            units.length === 0
+        ) {
 
             table.innerHTML = `
                 <tr>
-                    <td colspan="6" class="empty">
+                    <td
+                        colspan="6"
+                        class="empty"
+                    >
                         Belum ada data unit
                     </td>
                 </tr>
@@ -486,43 +606,70 @@
         }
 
 
+        /*
+         * KOSONGKAN TABEL
+         */
+
         table.innerHTML = "";
 
 
-        units.forEach((unit, index) => {
+        /*
+         * TAMPILKAN SEMUA UNIT
+         */
 
-            table.innerHTML += `
+        units.forEach(
+            (unit, index) => {
 
-                <tr>
+                table.innerHTML += `
 
-                    <td>${index + 1}</td>
+                    <tr>
 
-                    <td>${unit.unitNo}</td>
+                        <td>
+                            ${index + 1}
+                        </td>
 
-                    <td>${unit.model}</td>
+                        <td>
+                            ${unit.unitNo}
+                        </td>
 
-                    <td>${unit.typeBD}</td>
+                        <td>
+                            ${unit.model}
+                        </td>
 
-                    <td>${unit.status}</td>
+                        <td>
+                            ${unit.typeBD}
+                        </td>
 
-                    <td>
+                        <td>
+                            ${unit.status}
+                        </td>
 
-                        <button
-                            class="btn btn-danger"
-                            onclick="deleteUnit(${index})"
-                        >
-                            Hapus
-                        </button>
+                        <td>
 
-                    </td>
+                            <button
+                                class="btn btn-danger"
+                                onclick="deleteUnit(${index})"
+                            >
+                                Hapus
+                            </button>
 
-                </tr>
+                        </td>
 
-            `;
+                    </tr>
 
-        });
+                `;
+
+            }
+        );
 
     }
+
+
+    /*
+     * TAMPILKAN DATA SAAT HALAMAN DIBUKA
+     */
+
+    renderUnits();
 
 </script>
 
