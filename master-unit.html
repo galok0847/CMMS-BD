@@ -3,163 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Unit - CMMS BD</title>
+
+    <title>Master Unit - CMMS-BD</title>
 
     <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
         }
 
         body {
-            background: #f4f6f8;
-            color: #1f2937;
-        }
-
-        .app {
-            display: flex;
-            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #111827;
         }
 
         .sidebar {
-            width: 240px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 180px;
+            height: 100vh;
             background: #172033;
             color: white;
-            padding: 22px 15px;
+            padding: 25px 10px;
         }
 
         .logo {
-            padding: 10px 12px 25px;
-            border-bottom: 1px solid #334155;
-            margin-bottom: 20px;
+            padding: 0 10px 20px;
+            border-bottom: 1px solid #344056;
+            margin-bottom: 15px;
         }
 
         .logo h2 {
-            font-size: 22px;
+            margin: 0;
+            font-size: 17px;
         }
 
         .logo p {
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 5px;
+            margin: 4px 0 0;
+            font-size: 9px;
+            color: #9ca3af;
         }
 
         .menu {
-            list-style: none;
-        }
-
-        .menu li {
-            margin-bottom: 7px;
-        }
-
-        .menu button {
-            width: 100%;
-            border: none;
-            background: transparent;
-            color: #cbd5e1;
-            text-align: left;
-            padding: 13px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .menu button:hover,
-        .menu button.active {
-            background: #263653;
+            display: block;
             color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            margin-bottom: 5px;
+            border-radius: 7px;
+            font-size: 11px;
+        }
+
+        .menu:hover {
+            background: #263957;
+        }
+
+        .menu.active {
+            background: #263957;
         }
 
         .content {
-            flex: 1;
-            padding: 28px;
-            overflow-x: auto;
+            margin-left: 180px;
+            padding: 25px 20px;
         }
 
-        .header {
-            margin-bottom: 25px;
+        .page-title h1 {
+            margin: 0;
+            font-size: 23px;
         }
 
-        .header h1 {
-            font-size: 28px;
-        }
-
-        .header p {
-            color: #64748b;
+        .page-title p {
             margin-top: 5px;
+            color: #64748b;
+            font-size: 12px;
         }
 
-        .form-box,
-        .table-box {
+        .card {
             background: white;
-            border-radius: 12px;
-            padding: 22px;
-            margin-bottom: 22px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
-        .form-box h2,
-        .table-box h2 {
-            font-size: 19px;
-            margin-bottom: 18px;
+        .card h2 {
+            margin-top: 0;
+            font-size: 15px;
         }
 
-        .form-row {
+        .form-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
         }
 
-        .field {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-
-        .field label {
-            font-size: 13px;
+        label {
+            display: block;
+            font-size: 10px;
+            margin-bottom: 6px;
             color: #475569;
         }
 
-        .field input,
-        .field select {
-            padding: 11px;
+        input,
+        select {
+            width: 100%;
+            padding: 8px 9px;
             border: 1px solid #cbd5e1;
-            border-radius: 7px;
+            border-radius: 6px;
+            font-size: 11px;
             outline: none;
         }
 
-        .field input:focus,
-        .field select:focus {
+        input:focus,
+        select:focus {
             border-color: #2563eb;
         }
 
-        .button-row {
-            margin-top: 18px;
+        .button-area {
+            margin-top: 15px;
         }
 
-        .btn {
-            padding: 11px 20px;
+        button {
             border: none;
-            border-radius: 7px;
             background: #2563eb;
             color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 11px;
             font-weight: bold;
         }
 
-        .btn:hover {
+        button:hover {
             background: #1d4ed8;
-        }
-
-        .btn-danger {
-            background: #dc2626;
-        }
-
-        .btn-danger:hover {
-            background: #b91c1c;
         }
 
         .table-wrapper {
@@ -169,42 +147,37 @@
         table {
             width: 100%;
             border-collapse: collapse;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: center;
+            min-width: 900px;
         }
 
         th {
-            background: #f8fafc;
-            font-size: 13px;
+            background: #f1f5f9;
+            padding: 9px;
+            font-size: 10px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         td {
-            font-size: 14px;
+            padding: 9px;
+            font-size: 10px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        .empty {
-            color: #64748b;
-            padding: 25px;
+        .delete-btn {
+            background: #dc2626;
+            padding: 7px 12px;
+            font-size: 10px;
         }
 
-        @media (max-width: 900px) {
-            .form-row {
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+        @media (max-width: 1000px) {
+            .form-grid {
                 grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 650px) {
-            .sidebar {
-                width: 190px;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -212,136 +185,145 @@
 
 <body>
 
-<div class="app">
-
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <div class="sidebar">
 
         <div class="logo">
             <h2>CMMS-BD</h2>
             <p>Maintenance Management System</p>
         </div>
 
-        <ul class="menu">
+        <a href="index.html" class="menu">
+            📊 Dashboard
+        </a>
 
-            <li>
-                <button onclick="location.href='index.html'">
-                    📊 Dashboard
-                </button>
-            </li>
+        <a href="master-unit.html" class="menu active">
+            🚜 Master Unit
+        </a>
 
-            <li>
-                <button class="active">
-                    🚜 Master Unit
-                </button>
-            </li>
+        <a href="breakdown.html" class="menu">
+            🔧 Breakdown
+        </a>
 
-            <li>
-                <button onclick="location.href='breakdown.html'">
-                    🔧 Breakdown
-                </button>
-            </li>
+        <a href="#" class="menu">
+            📅 Preventive Maintenance
+        </a>
 
-            <li>
-                <button>
-                    📋 Preventive Maintenance
-                </button>
-            </li>
+        <a href="#" class="menu">
+            📈 Report
+        </a>
 
-            <li>
-                <button>
-                    📈 Report
-                </button>
-            </li>
-
-        </ul>
-
-    </aside>
+    </div>
 
 
     <!-- CONTENT -->
-    <main class="content">
+    <div class="content">
 
-        <div class="header">
+        <div class="page-title">
             <h1>Master Unit</h1>
             <p>Data master unit CMMS-BD</p>
         </div>
 
 
-        <!-- FORM TAMBAH UNIT -->
-        <div class="form-box">
+        <!-- FORM -->
+        <div class="card">
 
             <h2>Tambah Unit</h2>
 
-            <div class="form-row">
+            <div class="form-grid">
 
-                <div class="field">
-                    <label>Unit No</label>
+                <div>
+                    <label>Type Unit</label>
+
+                    <select id="typeUnit">
+
+                        <option value="">Pilih Type Unit</option>
+
+                        <option value="Excavator">
+                            Excavator
+                        </option>
+
+                        <option value="Dump Truck">
+                            Dump Truck
+                        </option>
+
+                        <option value="Dozer">
+                            Dozer
+                        </option>
+
+                        <option value="Grader">
+                            Grader
+                        </option>
+
+                        <option value="Wheel Loader">
+                            Wheel Loader
+                        </option>
+
+                        <option value="Compactor">
+                            Compactor
+                        </option>
+
+                        <option value="Crane">
+                            Crane
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+                </div>
+
+
+                <div>
+                    <label>Code Unit</label>
 
                     <input
                         type="text"
-                        id="unitNo"
-                        placeholder="Contoh: EX2003"
+                        id="codeUnit"
+                        placeholder="Contoh: EX 2003"
                     >
                 </div>
 
 
-                <div class="field">
+                <div>
                     <label>Model</label>
 
                     <input
                         type="text"
                         id="model"
-                        placeholder="Contoh: EX2000"
+                        placeholder="Contoh: SH210-6"
                     >
                 </div>
 
 
-                <div class="field">
-                    <label>Type BD</label>
+                <div>
+                    <label>Serial Number</label>
 
-                    <select id="typeBD">
-
-                        <option value="">
-                            Pilih Type BD
-                        </option>
-
-                        <option value="Breakdown Schedule">
-                            Breakdown Schedule
-                        </option>
-
-                        <option value="Unschedule">
-                            Unschedule
-                        </option>
-
-                    </select>
-
+                    <input
+                        type="text"
+                        id="serialNumber"
+                        placeholder="Contoh: SH123456"
+                    >
                 </div>
 
 
-                <div class="field">
-                    <label>Status</label>
+                <div>
+                    <label>Manufacture</label>
 
-                    <select id="status">
-
-                        <option value="Active">
-                            Active
-                        </option>
-
-                        <option value="Inactive">
-                            Inactive
-                        </option>
-
-                    </select>
-
+                    <input
+                        type="text"
+                        id="manufacture"
+                        placeholder="Contoh: Sumitomo"
+                    >
                 </div>
 
             </div>
 
 
-            <div class="button-row">
+            <div class="button-area">
 
-                <button class="btn" onclick="addUnit()">
+                <button onclick="addUnit()">
                     + Tambah Unit
                 </button>
 
@@ -350,8 +332,8 @@
         </div>
 
 
-        <!-- TABEL UNIT -->
-        <div class="table-box">
+        <!-- TABLE -->
+        <div class="card">
 
             <h2>Daftar Unit</h2>
 
@@ -362,23 +344,27 @@
                     <thead>
 
                         <tr>
+
                             <th>No</th>
-                            <th>Unit No</th>
+
+                            <th>Type Unit</th>
+
+                            <th>Code Unit</th>
+
                             <th>Model</th>
-                            <th>Type BD</th>
-                            <th>Status</th>
+
+                            <th>Serial Number</th>
+
+                            <th>Manufacture</th>
+
                             <th>Aksi</th>
+
                         </tr>
 
                     </thead>
 
-                    <tbody id="unitTable">
 
-                        <tr>
-                            <td colspan="6" class="empty">
-                                Belum ada data unit
-                            </td>
-                        </tr>
+                    <tbody id="unitTable">
 
                     </tbody>
 
@@ -388,20 +374,10 @@
 
         </div>
 
-    </main>
-
-</div>
+    </div>
 
 
 <script>
-
-    /*
-     * DATA MASTER UNIT
-     *
-     * Data disimpan di localStorage browser.
-     * Jadi data tidak hilang ketika halaman
-     * direfresh atau ditutup.
-     */
 
     let units =
         JSON.parse(
@@ -409,96 +385,74 @@
         ) || [];
 
 
-    /*
-     * TAMBAH UNIT
-     */
-
     function addUnit() {
 
-        const unitNo =
-            document
-                .getElementById("unitNo")
-                .value
-                .trim();
+        const typeUnit =
+            document.getElementById("typeUnit").value.trim();
+
+        const codeUnit =
+            document.getElementById("codeUnit").value.trim();
 
         const model =
-            document
-                .getElementById("model")
-                .value
-                .trim();
+            document.getElementById("model").value.trim();
 
-        const typeBD =
-            document
-                .getElementById("typeBD")
-                .value;
+        const serialNumber =
+            document.getElementById("serialNumber").value.trim();
 
-        const status =
-            document
-                .getElementById("status")
-                .value;
+        const manufacture =
+            document.getElementById("manufacture").value.trim();
 
-
-        /*
-         * VALIDASI
-         */
 
         if (
-            !unitNo ||
+            !typeUnit ||
+            !codeUnit ||
             !model ||
-            !typeBD
+            !serialNumber ||
+            !manufacture
         ) {
 
-            alert(
-                "Unit No, Model, dan Type BD wajib diisi."
-            );
+            alert("Semua data unit wajib diisi.");
 
             return;
         }
 
 
-        /*
-         * CEK UNIT DUPLIKAT
-         */
-
-        const existing =
+        // Cek Code Unit agar tidak duplikat
+        const duplicate =
             units.some(
                 unit =>
-                    unit.unitNo.toLowerCase()
-                    ===
-                    unitNo.toLowerCase()
+                    unit.codeUnit.toLowerCase() ===
+                    codeUnit.toLowerCase()
             );
 
 
-        if (existing) {
+        if (duplicate) {
 
-            alert(
-                "Unit No sudah terdaftar."
-            );
+            alert("Code Unit sudah terdaftar.");
 
             return;
         }
 
 
-        /*
-         * MASUKKAN DATA
-         */
+        const newUnit = {
 
-        units.push({
+            id: Date.now(),
 
-            unitNo: unitNo,
+            typeUnit: typeUnit,
+
+            codeUnit: codeUnit,
 
             model: model,
 
-            typeBD: typeBD,
+            serialNumber: serialNumber,
 
-            status: status
+            manufacture: manufacture
 
-        });
+        };
 
 
-        /*
-         * SIMPAN KE LOCAL STORAGE
-         */
+        units.push(newUnit);
+
 
         localStorage.setItem(
             "cmms_units",
@@ -506,116 +460,81 @@
         );
 
 
-        /*
-         * TAMPILKAN DATA
-         */
+        clearForm();
 
         renderUnits();
 
+    }
 
-        /*
-         * KOSONGKAN FORM
-         */
 
-        document
-            .getElementById("unitNo")
-            .value = "";
+    function clearForm() {
 
-        document
-            .getElementById("model")
-            .value = "";
+        document.getElementById("typeUnit").value = "";
 
-        document
-            .getElementById("typeBD")
-            .value = "";
+        document.getElementById("codeUnit").value = "";
 
-        document
-            .getElementById("status")
-            .value = "Active";
+        document.getElementById("model").value = "";
+
+        document.getElementById("serialNumber").value = "";
+
+        document.getElementById("manufacture").value = "";
 
     }
 
 
-    /*
-     * HAPUS UNIT
-     */
-
-    function deleteUnit(index) {
+    function deleteUnit(id) {
 
         if (
-            confirm(
-                "Yakin ingin menghapus unit ini?"
+            !confirm(
+                "Apakah Anda yakin ingin menghapus unit ini?"
             )
         ) {
 
-            units.splice(
-                index,
-                1
-            );
-
-
-            /*
-             * UPDATE LOCAL STORAGE
-             */
-
-            localStorage.setItem(
-                "cmms_units",
-                JSON.stringify(units)
-            );
-
-
-            renderUnits();
+            return;
 
         }
 
+
+        units =
+            units.filter(
+                unit => unit.id !== id
+            );
+
+
+        localStorage.setItem(
+            "cmms_units",
+            JSON.stringify(units)
+        );
+
+
+        renderUnits();
+
     }
 
-
-    /*
-     * TAMPILKAN DATA UNIT
-     */
 
     function renderUnits() {
 
         const table =
-            document.getElementById(
-                "unitTable"
-            );
+            document.getElementById("unitTable");
 
 
-        /*
-         * JIKA BELUM ADA DATA
-         */
+        table.innerHTML = "";
 
-        if (
-            units.length === 0
-        ) {
+
+        if (units.length === 0) {
 
             table.innerHTML = `
                 <tr>
-                    <td
-                        colspan="6"
-                        class="empty"
-                    >
-                        Belum ada data unit
+                    <td colspan="7">
+                        Belum ada data unit.
                     </td>
                 </tr>
             `;
 
             return;
+
         }
 
-
-        /*
-         * KOSONGKAN TABEL
-         */
-
-        table.innerHTML = "";
-
-
-        /*
-         * TAMPILKAN SEMUA UNIT
-         */
 
         units.forEach(
             (unit, index) => {
@@ -629,7 +548,11 @@
                         </td>
 
                         <td>
-                            ${unit.unitNo}
+                            ${unit.typeUnit}
+                        </td>
+
+                        <td>
+                            ${unit.codeUnit}
                         </td>
 
                         <td>
@@ -637,18 +560,18 @@
                         </td>
 
                         <td>
-                            ${unit.typeBD}
+                            ${unit.serialNumber}
                         </td>
 
                         <td>
-                            ${unit.status}
+                            ${unit.manufacture}
                         </td>
 
                         <td>
 
                             <button
-                                class="btn btn-danger"
-                                onclick="deleteUnit(${index})"
+                                class="delete-btn"
+                                onclick="deleteUnit(${unit.id})"
                             >
                                 Hapus
                             </button>
@@ -664,10 +587,6 @@
 
     }
 
-
-    /*
-     * TAMPILKAN DATA SAAT HALAMAN DIBUKA
-     */
 
     renderUnits();
 
