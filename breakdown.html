@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Breakdown - CMMS BD</title>
+    <title>Breakdown - CMMS BD</title>
 
     <style>
         * {
@@ -14,36 +14,33 @@
         }
 
         body {
-            background: #f4f6f8;
-            color: #1f2937;
-        }
-
-        .app {
             display: flex;
-            min-height: 100vh;
+            background: #f4f6f8;
+            color: #333;
         }
 
+        /* SIDEBAR */
         .sidebar {
             width: 240px;
-            background: #172033;
+            min-height: 100vh;
+            background: #1f2937;
             color: white;
-            padding: 22px 15px;
+            padding: 20px;
         }
 
         .logo {
-            padding: 10px 12px 25px;
-            border-bottom: 1px solid #334155;
-            margin-bottom: 20px;
+            text-align: center;
+            margin-bottom: 35px;
         }
 
         .logo h2 {
             font-size: 22px;
+            margin-bottom: 5px;
         }
 
         .logo p {
             font-size: 12px;
-            color: #94a3b8;
-            margin-top: 5px;
+            color: #9ca3af;
         }
 
         .menu {
@@ -51,31 +48,32 @@
         }
 
         .menu li {
-            margin-bottom: 7px;
+            margin-bottom: 8px;
         }
 
-        .menu button {
-            width: 100%;
-            border: none;
-            background: transparent;
-            color: #cbd5e1;
-            text-align: left;
-            padding: 13px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
+        .menu a {
+            display: block;
+            padding: 12px 15px;
+            color: #d1d5db;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: 0.2s;
         }
 
-        .menu button:hover,
-        .menu button.active {
-            background: #263653;
+        .menu a:hover {
+            background: #374151;
             color: white;
         }
 
+        .menu a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* CONTENT */
         .content {
             flex: 1;
-            padding: 28px;
-            overflow-x: auto;
+            padding: 30px;
         }
 
         .header {
@@ -84,136 +82,169 @@
 
         .header h1 {
             font-size: 28px;
+            color: #111827;
         }
 
         .header p {
-            color: #64748b;
             margin-top: 5px;
+            color: #6b7280;
         }
 
-        .form-box,
-        .table-box {
+        /* FORM */
+        .card {
             background: white;
-            border-radius: 12px;
-            padding: 22px;
-            margin-bottom: 22px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
         }
 
-        .form-box h2,
-        .table-box h2 {
-            font-size: 19px;
-            margin-bottom: 18px;
+        .card h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #111827;
         }
 
-        .form-row {
+        .form-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            margin-bottom: 15px;
         }
 
-        .field {
+        .form-group {
             display: flex;
             flex-direction: column;
-            gap: 7px;
         }
 
-        .field label {
-            font-size: 13px;
-            color: #475569;
+        .form-group label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 7px;
         }
 
-        .field input,
-        .field select,
-        .field textarea {
-            padding: 11px;
-            border: 1px solid #cbd5e1;
-            border-radius: 7px;
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
             outline: none;
         }
 
-        .field textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .field input:focus,
-        .field select:focus,
-        .field textarea:focus {
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             border-color: #2563eb;
         }
 
-        .button-row {
-            margin-top: 18px;
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
         }
 
-        .btn {
-            padding: 11px 20px;
+        .full {
+            grid-column: span 3;
+        }
+
+        .button-area {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
             border: none;
-            border-radius: 7px;
-            background: #2563eb;
-            color: white;
+            padding: 11px 20px;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 14px;
             font-weight: bold;
         }
 
-        .btn:hover {
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
             background: #1d4ed8;
         }
 
-        .btn-danger {
-            background: #dc2626;
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
         }
 
-        .btn-danger:hover {
-            background: #b91c1c;
+        .btn-secondary:hover {
+            background: #4b5563;
         }
 
-        .table-wrapper {
+        /* TABLE */
+        .table-container {
             overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1100px;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: center;
+            min-width: 1300px;
         }
 
         th {
-            background: #f8fafc;
+            background: #1f2937;
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
             font-size: 13px;
         }
 
         td {
-            font-size: 14px;
+            padding: 10px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
         }
 
-        .empty {
-            color: #64748b;
-            padding: 25px;
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .btn-edit {
+            background: #f59e0b;
+            color: white;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .btn-delete {
+            background: #dc2626;
+            color: white;
+            padding: 6px 10px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .status-open {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .status-closed {
+            color: #16a34a;
+            font-weight: bold;
         }
 
         @media (max-width: 900px) {
-            .form-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 650px) {
             .sidebar {
                 width: 190px;
             }
 
-            .form-row {
+            .form-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: span 1;
             }
         }
     </style>
@@ -221,45 +252,32 @@
 
 <body>
 
-<div class="app">
-
+    <!-- SIDEBAR -->
     <aside class="sidebar">
 
         <div class="logo">
-            <h2>CMMS-BD</h2>
-            <p>Maintenance Management System</p>
+            <h2>CMMS BD</h2>
+            <p>Maintenance System</p>
         </div>
 
         <ul class="menu">
 
             <li>
-                <button onclick="location.href='index.html'">
-                    📊 Dashboard
-                </button>
+                <a href="index.html">
+                    Dashboard
+                </a>
             </li>
 
             <li>
-                <button onclick="location.href='master-unit.html'">
-                    🚜 Master Unit
-                </button>
+                <a href="master-unit.html">
+                    Master Unit
+                </a>
             </li>
 
             <li>
-                <button class="active">
-                    🔧 Breakdown
-                </button>
-            </li>
-
-            <li>
-                <button>
-                    📋 Preventive Maintenance
-                </button>
-            </li>
-
-            <li>
-                <button>
-                    📈 Report
-                </button>
+                <a href="breakdown.html" class="active">
+                    Breakdown
+                </a>
             </li>
 
         </ul>
@@ -267,188 +285,197 @@
     </aside>
 
 
+    <!-- CONTENT -->
     <main class="content">
 
         <div class="header">
-            <h1>Input Breakdown</h1>
-            <p>Pencatatan data breakdown unit</p>
+            <h1>Breakdown</h1>
+            <p>Input dan monitoring data breakdown unit</p>
         </div>
 
 
         <!-- FORM INPUT -->
-        <div class="form-box">
+        <div class="card">
 
-            <h2>Tambah Data Breakdown</h2>
+            <h2>Input Breakdown</h2>
 
-            <div class="form-row">
+            <form id="breakdownForm">
 
-                <div class="field">
-                    <label>Tanggal</label>
-                    <input type="date" id="tanggal">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Tanggal</label>
+                        <input type="date" id="tanggal" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Unit No</label>
+
+                        <select id="unitNo" required>
+                            <option value="">-- Pilih Unit --</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Model</label>
+
+                        <input
+                            type="text"
+                            id="model"
+                            readonly
+                            placeholder="Otomatis"
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Type BD</label>
+
+                        <input
+                            type="text"
+                            id="typeBD"
+                            readonly
+                            placeholder="Otomatis"
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Component</label>
+
+                        <input
+                            type="text"
+                            id="component"
+                            placeholder="Contoh: Engine"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Status</label>
+
+                        <select id="status" required>
+                            <option value="Open">Open</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Downtime (Jam)</label>
+
+                        <input
+                            type="number"
+                            id="downtime"
+                            min="0"
+                            step="0.01"
+                            placeholder="0"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Operating Hours (Jam)</label>
+
+                        <input
+                            type="number"
+                            id="operatingHours"
+                            min="0"
+                            step="0.01"
+                            placeholder="0"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>HM Awal</label>
+
+                        <input
+                            type="number"
+                            id="hmAwal"
+                            min="0"
+                            step="0.01"
+                            placeholder="0"
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>HM Akhir</label>
+
+                        <input
+                            type="number"
+                            id="hmAkhir"
+                            min="0"
+                            step="0.01"
+                            placeholder="0"
+                        >
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>Problem</label>
+
+                        <textarea
+                            id="problem"
+                            placeholder="Jelaskan problem breakdown"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>Keterangan</label>
+
+                        <textarea
+                            id="keterangan"
+                            placeholder="Keterangan tambahan"
+                        ></textarea>
+
+                    </div>
+
                 </div>
 
-                <div class="field">
-                    <label>Unit No</label>
-                    <input
-                        type="text"
-                        id="unitNo"
-                        placeholder="Contoh: EX2003"
+
+                <div class="button-area">
+
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                        id="btnSimpan"
                     >
-                </div>
+                        Simpan Breakdown
+                    </button>
 
-                <div class="field">
-                    <label>Model</label>
-                    <input
-                        type="text"
-                        id="model"
-                        placeholder="Contoh: EX2000"
+                    <button
+                        type="button"
+                        class="btn-secondary"
+                        onclick="resetForm()"
                     >
+                        Reset
+                    </button>
+
                 </div>
 
-                <div class="field">
-                    <label>Type BD</label>
-
-                    <select id="typeBD">
-
-                        <option value="">
-                            Pilih Type BD
-                        </option>
-
-                        <option value="Breakdown Schedule">
-                            Breakdown Schedule
-                        </option>
-
-                        <option value="Unschedule">
-                            Unschedule
-                        </option>
-
-                    </select>
-                </div>
-
-            </div>
-
-
-            <div class="form-row">
-
-                <div class="field">
-                    <label>Component</label>
-
-                    <input
-                        type="text"
-                        id="component"
-                        placeholder="Contoh: Engine"
-                    >
-                </div>
-
-                <div class="field">
-                    <label>Problem</label>
-
-                    <input
-                        type="text"
-                        id="problem"
-                        placeholder="Contoh: Oil Leak"
-                    >
-                </div>
-
-                <div class="field">
-                    <label>Downtime (Jam)</label>
-
-                    <input
-                        type="number"
-                        id="downtime"
-                        min="0"
-                        step="0.1"
-                        placeholder="Contoh: 4"
-                    >
-                </div>
-
-                <div class="field">
-                    <label>Operating Hours (Jam)</label>
-
-                    <input
-                        type="number"
-                        id="operatingHours"
-                        min="0"
-                        step="0.1"
-                        placeholder="Contoh: 20"
-                    >
-                </div>
-
-            </div>
-
-
-            <div class="form-row">
-
-                <div class="field">
-                    <label>HM Awal</label>
-
-                    <input
-                        type="number"
-                        id="hmAwal"
-                        min="0"
-                        step="0.1"
-                        placeholder="Contoh: 12500"
-                    >
-                </div>
-
-                <div class="field">
-                    <label>HM Akhir</label>
-
-                    <input
-                        type="number"
-                        id="hmAkhir"
-                        min="0"
-                        step="0.1"
-                        placeholder="Contoh: 12520"
-                    >
-                </div>
-
-                <div class="field">
-                    <label>Status</label>
-
-                    <select id="status">
-
-                        <option value="Open">
-                            Open
-                        </option>
-
-                        <option value="Closed">
-                            Closed
-                        </option>
-
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label>Keterangan</label>
-
-                    <input
-                        type="text"
-                        id="keterangan"
-                        placeholder="Keterangan"
-                    >
-                </div>
-
-            </div>
-
-
-            <div class="button-row">
-
-                <button class="btn" onclick="addBreakdown()">
-                    + Simpan Breakdown
-                </button>
-
-            </div>
+            </form>
 
         </div>
 
 
-        <!-- TABLE -->
-        <div class="table-box">
+        <!-- TABLE DATA -->
+        <div class="card">
 
             <h2>Data Breakdown</h2>
 
-            <div class="table-wrapper">
+            <div class="table-container">
 
                 <table>
 
@@ -467,19 +494,13 @@
                             <th>HM Awal</th>
                             <th>HM Akhir</th>
                             <th>Status</th>
+                            <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>
 
                     </thead>
 
-                    <tbody id="breakdownTable">
-
-                        <tr>
-                            <td colspan="13" class="empty">
-                                Belum ada data breakdown
-                            </td>
-                        </tr>
-
+                    <tbody id="breakdownTableBody">
                     </tbody>
 
                 </table>
@@ -490,199 +511,410 @@
 
     </main>
 
-</div>
+
+    <script>
+
+        /*
+        =====================================================
+        MASTER UNIT
+        =====================================================
+        */
+
+        let units =
+            JSON.parse(
+                localStorage.getItem("cmms_units")
+            ) || [];
 
 
-<script>
+        /*
+        =====================================================
+        DATA BREAKDOWN
+        =====================================================
+        */
 
-    let breakdowns = [];
-
-
-    function addBreakdown() {
-
-        const tanggal =
-            document.getElementById("tanggal").value;
-
-        const unitNo =
-            document.getElementById("unitNo").value.trim();
-
-        const model =
-            document.getElementById("model").value.trim();
-
-        const typeBD =
-            document.getElementById("typeBD").value;
-
-        const component =
-            document.getElementById("component").value.trim();
-
-        const problem =
-            document.getElementById("problem").value.trim();
-
-        const downtime =
-            Number(document.getElementById("downtime").value);
-
-        const operatingHours =
-            Number(document.getElementById("operatingHours").value);
-
-        const hmAwal =
-            Number(document.getElementById("hmAwal").value);
-
-        const hmAkhir =
-            Number(document.getElementById("hmAkhir").value);
-
-        const status =
-            document.getElementById("status").value;
-
-        const keterangan =
-            document.getElementById("keterangan").value.trim();
+        let breakdowns =
+            JSON.parse(
+                localStorage.getItem("cmms_breakdowns")
+            ) || [];
 
 
-        if (
-            !tanggal ||
-            !unitNo ||
-            !model ||
-            !typeBD ||
-            !component ||
-            !problem
-        ) {
+        /*
+        =====================================================
+        EDIT MODE
+        =====================================================
+        */
 
-            alert(
-                "Tanggal, Unit No, Model, Type BD, Component, dan Problem wajib diisi."
-            );
-
-            return;
-        }
+        let editIndex = -1;
 
 
-        if (downtime < 0 || operatingHours < 0) {
+        /*
+        =====================================================
+        LOAD UNIT KE DROPDOWN
+        =====================================================
+        */
 
-            alert(
-                "Downtime dan Operating Hours tidak boleh negatif."
-            );
+        function loadUnits() {
 
-            return;
-        }
+            const unitSelect =
+                document.getElementById("unitNo");
 
-
-        if (hmAkhir < hmAwal) {
-
-            alert(
-                "HM Akhir tidak boleh lebih kecil dari HM Awal."
-            );
-
-            return;
-        }
+            unitSelect.innerHTML =
+                '<option value="">-- Pilih Unit --</option>';
 
 
-        breakdowns.push({
+            units.forEach(function(unit) {
 
-            tanggal,
-            unitNo,
-            model,
-            typeBD,
-            component,
-            problem,
-            downtime,
-            operatingHours,
-            hmAwal,
-            hmAkhir,
-            status,
-            keterangan
+                const option =
+                    document.createElement("option");
 
-        });
+                option.value = unit.unitNo;
 
+                option.textContent =
+                    unit.unitNo;
 
-        renderBreakdowns();
+                unitSelect.appendChild(option);
 
-
-        document.getElementById("tanggal").value = "";
-        document.getElementById("unitNo").value = "";
-        document.getElementById("model").value = "";
-        document.getElementById("typeBD").value = "";
-        document.getElementById("component").value = "";
-        document.getElementById("problem").value = "";
-        document.getElementById("downtime").value = "";
-        document.getElementById("operatingHours").value = "";
-        document.getElementById("hmAwal").value = "";
-        document.getElementById("hmAkhir").value = "";
-        document.getElementById("status").value = "Open";
-        document.getElementById("keterangan").value = "";
-
-    }
-
-
-    function deleteBreakdown(index) {
-
-        if (
-            confirm("Yakin ingin menghapus data breakdown ini?")
-        ) {
-
-            breakdowns.splice(index, 1);
-
-            renderBreakdowns();
+            });
 
         }
 
-    }
+
+        /*
+        =====================================================
+        UNIT DIPILIH
+        MODEL DAN TYPE BD OTOMATIS
+        =====================================================
+        */
+
+        document
+            .getElementById("unitNo")
+            .addEventListener("change", function() {
+
+                const selectedUnit =
+                    this.value;
+
+                const unit =
+                    units.find(function(item) {
+
+                        return item.unitNo === selectedUnit;
+
+                    });
 
 
-    function renderBreakdowns() {
+                if (unit) {
 
-        const table =
-            document.getElementById("breakdownTable");
+                    document.getElementById("model").value =
+                        unit.model || "";
 
+                    document.getElementById("typeBD").value =
+                        unit.typeBD || "";
 
-        if (breakdowns.length === 0) {
+                } else {
 
-            table.innerHTML = `
-                <tr>
-                    <td colspan="13" class="empty">
-                        Belum ada data breakdown
-                    </td>
-                </tr>
-            `;
+                    document.getElementById("model").value =
+                        "";
 
-            return;
-        }
+                    document.getElementById("typeBD").value =
+                        "";
 
+                }
 
-        table.innerHTML = "";
+            });
 
 
-        breakdowns.forEach((item, index) => {
+        /*
+        =====================================================
+        SIMPAN DATA
+        =====================================================
+        */
 
-            table.innerHTML += `
+        document
+            .getElementById("breakdownForm")
+            .addEventListener("submit", function(event) {
 
-                <tr>
+                event.preventDefault();
+
+
+                const tanggal =
+                    document.getElementById("tanggal").value;
+
+                const unitNo =
+                    document.getElementById("unitNo").value;
+
+                const model =
+                    document.getElementById("model").value;
+
+                const typeBD =
+                    document.getElementById("typeBD").value;
+
+                const component =
+                    document.getElementById("component").value.trim();
+
+                const problem =
+                    document.getElementById("problem").value.trim();
+
+                const downtime =
+                    Number(
+                        document.getElementById("downtime").value
+                    );
+
+                const operatingHours =
+                    Number(
+                        document.getElementById("operatingHours").value
+                    );
+
+                const hmAwal =
+                    Number(
+                        document.getElementById("hmAwal").value || 0
+                    );
+
+                const hmAkhir =
+                    Number(
+                        document.getElementById("hmAkhir").value || 0
+                    );
+
+                const status =
+                    document.getElementById("status").value;
+
+                const keterangan =
+                    document
+                        .getElementById("keterangan")
+                        .value
+                        .trim();
+
+
+                /*
+                VALIDASI
+                */
+
+                if (!tanggal ||
+                    !unitNo ||
+                    !model ||
+                    !typeBD ||
+                    !component ||
+                    !problem) {
+
+                    alert(
+                        "Mohon lengkapi data yang wajib diisi."
+                    );
+
+                    return;
+
+                }
+
+
+                if (downtime < 0) {
+
+                    alert(
+                        "Downtime tidak boleh negatif."
+                    );
+
+                    return;
+
+                }
+
+
+                if (operatingHours < 0) {
+
+                    alert(
+                        "Operating Hours tidak boleh negatif."
+                    );
+
+                    return;
+
+                }
+
+
+                if (hmAkhir < hmAwal) {
+
+                    alert(
+                        "HM Akhir tidak boleh lebih kecil dari HM Awal."
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                OBJECT DATA
+                */
+
+                const data = {
+
+                    tanggal: tanggal,
+
+                    unitNo: unitNo,
+
+                    model: model,
+
+                    typeBD: typeBD,
+
+                    component: component,
+
+                    problem: problem,
+
+                    downtime: downtime,
+
+                    operatingHours: operatingHours,
+
+                    hmAwal: hmAwal,
+
+                    hmAkhir: hmAkhir,
+
+                    status: status,
+
+                    keterangan: keterangan
+
+                };
+
+
+                /*
+                JIKA EDIT
+                */
+
+                if (editIndex !== -1) {
+
+                    breakdowns[editIndex] = data;
+
+                    editIndex = -1;
+
+                    document.getElementById(
+                        "btnSimpan"
+                    ).textContent =
+                        "Simpan Breakdown";
+
+                }
+
+
+                /*
+                JIKA DATA BARU
+                */
+
+                else {
+
+                    breakdowns.push(data);
+
+                }
+
+
+                /*
+                SIMPAN LOCAL STORAGE
+                */
+
+                localStorage.setItem(
+                    "cmms_breakdowns",
+                    JSON.stringify(breakdowns)
+                );
+
+
+                /*
+                REFRESH TABLE
+                */
+
+                renderBreakdowns();
+
+
+                /*
+                RESET FORM
+                */
+
+                resetForm();
+
+
+                alert(
+                    "Data breakdown berhasil disimpan."
+                );
+
+            });
+
+
+        /*
+        =====================================================
+        TAMPILKAN DATA
+        =====================================================
+        */
+
+        function renderBreakdowns() {
+
+            const tbody =
+                document.getElementById(
+                    "breakdownTableBody"
+                );
+
+
+            tbody.innerHTML = "";
+
+
+            if (breakdowns.length === 0) {
+
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="14"
+                            style="text-align:center; padding:20px;">
+                            Belum ada data breakdown
+                        </td>
+                    </tr>
+                `;
+
+                return;
+
+            }
+
+
+            breakdowns.forEach(function(data, index) {
+
+                const row =
+                    document.createElement("tr");
+
+
+                const statusClass =
+                    data.status === "Closed"
+                        ? "status-closed"
+                        : "status-open";
+
+
+                row.innerHTML = `
 
                     <td>${index + 1}</td>
 
-                    <td>${item.tanggal}</td>
+                    <td>${data.tanggal}</td>
 
-                    <td>${item.unitNo}</td>
+                    <td>${data.unitNo}</td>
 
-                    <td>${item.model}</td>
+                    <td>${data.model}</td>
 
-                    <td>${item.typeBD}</td>
+                    <td>${data.typeBD}</td>
 
-                    <td>${item.component}</td>
+                    <td>${data.component}</td>
 
-                    <td>${item.problem}</td>
+                    <td>${data.problem}</td>
 
-                    <td>${item.downtime}</td>
+                    <td>${data.downtime}</td>
 
-                    <td>${item.operatingHours}</td>
+                    <td>${data.operatingHours}</td>
 
-                    <td>${item.hmAwal}</td>
+                    <td>${data.hmAwal}</td>
 
-                    <td>${item.hmAkhir}</td>
+                    <td>${data.hmAkhir}</td>
 
-                    <td>${item.status}</td>
+                    <td class="${statusClass}">
+                        ${data.status}
+                    </td>
+
+                    <td>${data.keterangan || "-"}</td>
 
                     <td>
 
                         <button
-                            class="btn btn-danger"
+                            class="btn-edit"
+                            onclick="editBreakdown(${index})"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="btn-delete"
                             onclick="deleteBreakdown(${index})"
                         >
                             Hapus
@@ -690,15 +922,158 @@
 
                     </td>
 
-                </tr>
+                `;
 
-            `;
 
-        });
+                tbody.appendChild(row);
 
-    }
+            });
 
-</script>
+        }
+
+
+        /*
+        =====================================================
+        EDIT DATA
+        =====================================================
+        */
+
+        function editBreakdown(index) {
+
+            const data =
+                breakdowns[index];
+
+
+            document.getElementById("tanggal").value =
+                data.tanggal;
+
+            document.getElementById("unitNo").value =
+                data.unitNo;
+
+
+            document.getElementById("model").value =
+                data.model;
+
+            document.getElementById("typeBD").value =
+                data.typeBD;
+
+            document.getElementById("component").value =
+                data.component;
+
+            document.getElementById("problem").value =
+                data.problem;
+
+            document.getElementById("downtime").value =
+                data.downtime;
+
+            document.getElementById("operatingHours").value =
+                data.operatingHours;
+
+            document.getElementById("hmAwal").value =
+                data.hmAwal;
+
+            document.getElementById("hmAkhir").value =
+                data.hmAkhir;
+
+            document.getElementById("status").value =
+                data.status;
+
+            document.getElementById("keterangan").value =
+                data.keterangan;
+
+
+            editIndex = index;
+
+
+            document.getElementById(
+                "btnSimpan"
+            ).textContent =
+                "Update Breakdown";
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        /*
+        =====================================================
+        HAPUS DATA
+        =====================================================
+        */
+
+        function deleteBreakdown(index) {
+
+            const yakin =
+                confirm(
+                    "Apakah Anda yakin ingin menghapus data ini?"
+                );
+
+
+            if (!yakin) {
+                return;
+            }
+
+
+            breakdowns.splice(index, 1);
+
+
+            localStorage.setItem(
+                "cmms_breakdowns",
+                JSON.stringify(breakdowns)
+            );
+
+
+            renderBreakdowns();
+
+        }
+
+
+        /*
+        =====================================================
+        RESET FORM
+        =====================================================
+        */
+
+        function resetForm() {
+
+            document
+                .getElementById("breakdownForm")
+                .reset();
+
+
+            document.getElementById("model").value =
+                "";
+
+            document.getElementById("typeBD").value =
+                "";
+
+
+            editIndex = -1;
+
+
+            document.getElementById(
+                "btnSimpan"
+            ).textContent =
+                "Simpan Breakdown";
+
+        }
+
+
+        /*
+        =====================================================
+        LOAD SAAT HALAMAN DIBUKA
+        =====================================================
+        */
+
+        loadUnits();
+
+        renderBreakdowns();
+
+    </script>
 
 </body>
 </html>
