@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Historical Unit BD - CMMS-BD</title>
+
+    <!-- Library untuk export Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 180px;
+            height: 100vh;
+            background: #172033;
+            color: white;
+            padding: 25px 10px;
+        }
+
+        .logo {
+            padding: 0 10px 20px;
+            border-bottom: 1px solid #344056;
+            margin-bottom: 15px;
+        }
+
+        .logo h2 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .logo p {
+            margin: 4px 0 0;
+            font-size: 9px;
+            color: #9ca3af;
+        }
+
+        .menu {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            margin-bottom: 5px;
+            border-radius: 7px;
+            font-size: 11px;
+        }
+
+        .menu:hover {
+            background: #263957;
+        }
+
+        .menu.active {
+            background: #263957;
+        }
+
+        .content {
+            margin-left: 180px;
+            padding: 25px 20px;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .page-title p {
+            margin-top: 5px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 15px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        label {
+            display: block;
+            font-size: 10px;
+            margin-bottom: 6px;
+            color: #475569;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 9px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 11px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #2563eb;
+        }
+
+        button {
+            border: none;
+            color: white;
+            padding: 9px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .filter-btn {
+            background: #2563eb;
+        }
+
+        .filter-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .reset-btn {
+            background: #64748b;
+        }
+
+        .reset-btn:hover {
+            background: #475569;
+        }
+
+        .excel-btn {
+            background: #16a34a;
+            margin-bottom: 15px;
+        }
+
+        .excel-btn:hover {
+            background: #15803d;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1300px;
+        }
+
+        th {
+            background: #f1f5f9;
+            padding: 9px;
+            font-size: 10px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 9px;
+            font-size: 10px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        .total-info {
+            margin-bottom: 12px;
+            font-size: 11px;
+            color: #475569;
+        }
+
+        @media (max-width: 1000px) {
+            .filter-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <div class="logo">
+            <h2>CMMS-BD</h2>
+            <p>Maintenance Management System</p>
+        </div>
+
+        <a href="index.html" class="menu">
+            📊 Dashboard
+        </a>
+
+        <a href="master-unit.html" class="menu">
+            🚜 Master Unit
+        </a>
+
+        <a href="breakdown.html" class="menu">
+            🔧 Breakdown
+        </a>
+
+        <a href="historical-unit-bd.html" class="menu active">
+            📚 Historical Unit BD
+        </a>
+
+        <a href="#" class="menu">
+            📈 Report
+        </a>
+
+    </div>
+
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <div class="page-title">
+            <h1>Historical Unit BD</h1>
+            <p>Historical data Breakdown Unit</p>
+        </div>
+
+
+        <!-- FILTER -->
+        <div class="card">
+
+            <h2>Filter Historical BD</h2>
+
+            <div class="filter-grid">
+
+                <div>
+                    <label>Unit</label>
+
+                    <select id="filterUnit">
+                        <option value="">Semua Unit</option>
+                    </select>
+                </div>
+
+
+                <div>
+                    <label>Problem</label>
+
+                    <select id="filterProblem">
+                        <option value="">Semua Problem</option>
+                    </select>
+                </div>
+
+
+                <button
+                    class="filter-btn"
+                    onclick="applyFilter()">
+                    🔎 Filter
+                </button>
+
+
+                <button
+                    class="reset-btn"
+                    onclick="resetFilter()">
+                    Reset
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- DATA -->
+        <div class="card">
+
+            <h2>Historical Unit Breakdown</h2>
+
+            <div class="total-info">
+                Total Data:
+                <strong id="totalData">0</strong>
+            </div>
+
+            <button
+                class="excel-btn"
+                onclick="downloadExcel()">
+                📥 Download Excel
+            </button>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Code Unit</th>
+                            <th>Type Unit</th>
+                            <th>Model</th>
+                            <th>Serial Number</th>
+                            <th>Manufacture</th>
+                            <th>Component</th>
+                            <th>Problem</th>
+                            <th>Downtime</th>
+                            <th>Operating Hours</th>
+                            <th>HM Awal</th>
+                            <th>HM Akhir</th>
+                            <th>Status</th>
+                            <th>Keterangan</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="historicalTable">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+    // Ambil data Breakdown
+    let breakdowns =
+        JSON.parse(
+            localStorage.getItem("cmms_breakdowns")
+        ) || [];
+
+
+    // Ambil Master Unit
+    let units =
+        JSON.parse(
+            localStorage.getItem("cmms_units")
+        ) || [];
+
+
+    let filteredData = [];
+
+
+    // Cari master unit
+    function getUnitData(codeUnit) {
+
+        return units.find(unit =>
+
+            (
+                unit.codeUnit ||
+                unit.unitNo ||
+                ""
+            ).toLowerCase() ===
+            (codeUnit || "").toLowerCase()
+
+        ) || {};
+
+    }
+
+
+    // Ambil Code Unit dari data breakdown
+    function getCodeUnit(item) {
+
+        return (
+            item.codeUnit ||
+            item.unitNo ||
+            ""
+        );
+
+    }
+
+
+    // Siapkan data historical
+    function prepareData() {
+
+        return breakdowns.map(item => {
+
+            const codeUnit =
+                getCodeUnit(item);
+
+            const master =
+                getUnitData(codeUnit);
+
+            return {
+
+                tanggal:
+                    item.tanggal || "",
+
+                codeUnit:
+                    codeUnit,
+
+                typeUnit:
+                    item.typeUnit ||
+                    master.typeUnit ||
+                    "",
+
+                model:
+                    item.model ||
+                    master.model ||
+                    "",
+
+                serialNumber:
+                    item.serialNumber ||
+                    master.serialNumber ||
+                    "",
+
+                manufacture:
+                    item.manufacture ||
+                    master.manufacture ||
+                    "",
+
+                component:
+                    item.component || "",
+
+                problem:
+                    item.problem || "",
+
+                downtime:
+                    item.downtime ?? "",
+
+                operatingHours:
+                    item.operatingHours ?? "",
+
+                hmAwal:
+                    item.hmAwal ?? "",
+
+                hmAkhir:
+                    item.hmAkhir ?? "",
+
+                status:
+                    item.status || "",
+
+                keterangan:
+                    item.keterangan || ""
+
+            };
+
+        });
+
+    }
+
+
+    // Isi filter
+    function loadFilters() {
+
+        const data =
+            prepareData();
+
+
+        const unitSelect =
+            document.getElementById("filterUnit");
+
+
+        const problemSelect =
+            document.getElementById("filterProblem");
+
+
+        const unitsSet =
+            [
+                ...new Set(
+                    data
+                        .map(item => item.codeUnit)
+                        .filter(Boolean)
+                )
+            ].sort();
+
+
+        const problemsSet =
+            [
+                ...new Set(
+                    data
+                        .map(item => item.problem)
+                        .filter(Boolean)
+                )
+            ].sort();
+
+
+        unitSelect.innerHTML =
+            `<option value="">Semua Unit</option>`;
+
+
+        problemSelect.innerHTML =
+            `<option value="">Semua Problem</option>`;
+
+
+        unitsSet.forEach(unit => {
+
+            unitSelect.innerHTML += `
+                <option value="${escapeHtml(unit)}">
+                    ${escapeHtml(unit)}
+                </option>
+            `;
+
+        });
+
+
+        problemsSet.forEach(problem => {
+
+            problemSelect.innerHTML += `
+                <option value="${escapeHtml(problem)}">
+                    ${escapeHtml(problem)}
+                </option>
+            `;
+
+        });
+
+    }
+
+
+    // Filter data
+    function applyFilter() {
+
+        const selectedUnit =
+            document.getElementById("filterUnit").value;
+
+
+        const selectedProblem =
+            document.getElementById("filterProblem").value;
+
+
+        const data =
+            prepareData();
+
+
+        filteredData =
+            data.filter(item => {
+
+                const unitMatch =
+                    !selectedUnit ||
+                    item.codeUnit === selectedUnit;
+
+
+                const problemMatch =
+                    !selectedProblem ||
+                    item.problem === selectedProblem;
+
+
+                return unitMatch && problemMatch;
+
+            });
+
+
+        renderTable();
+
+    }
+
+
+    // Reset filter
+    function resetFilter() {
+
+        document.getElementById("filterUnit").value = "";
+
+        document.getElementById("filterProblem").value = "";
+
+        filteredData =
+            prepareData();
+
+        renderTable();
+
+    }
+
+
+    // Tampilkan tabel
+    function renderTable() {
+
+        const table =
+            document.getElementById("historicalTable");
+
+
+        table.innerHTML = "";
+
+
+        document.getElementById("totalData").textContent =
+            filteredData.length;
+
+
+        if (filteredData.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="15">
+                        Belum ada data Historical Unit BD.
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+
+        filteredData.forEach((item, index) => {
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>${index + 1}</td>
+
+                    <td>${escapeHtml(item.tanggal)}</td>
+
+                    <td>${escapeHtml(item.codeUnit)}</td>
+
+                    <td>${escapeHtml(item.typeUnit)}</td>
+
+                    <td>${escapeHtml(item.model)}</td>
+
+                    <td>${escapeHtml(item.serialNumber)}</td>
+
+                    <td>${escapeHtml(item.manufacture)}</td>
+
+                    <td>${escapeHtml(item.component)}</td>
+
+                    <td>${escapeHtml(item.problem)}</td>
+
+                    <td>${escapeHtml(item.downtime)}</td>
+
+                    <td>${escapeHtml(item.operatingHours)}</td>
+
+                    <td>${escapeHtml(item.hmAwal)}</td>
+
+                    <td>${escapeHtml(item.hmAkhir)}</td>
+
+                    <td>${escapeHtml(item.status)}</td>
+
+                    <td>${escapeHtml(item.keterangan)}</td>
+
+                </tr>
+
+            `;
+
+        });
+
+    }
+
+
+    // Download Excel
+    function downloadExcel() {
+
+        if (filteredData.length === 0) {
+
+            alert(
+                "Tidak ada data yang dapat di-download."
+            );
+
+            return;
+
+        }
+
+
+        const excelData =
+            filteredData.map((item, index) => ({
+
+                "No":
+                    index + 1,
+
+                "Tanggal":
+                    item.tanggal,
+
+                "Code Unit":
+                    item.codeUnit,
+
+                "Type Unit":
+                    item.typeUnit,
+
+                "Model":
+                    item.model,
+
+                "Serial Number":
+                    item.serialNumber,
+
+                "Manufacture":
+                    item.manufacture,
+
+                "Component":
+                    item.component,
+
+                "Problem":
+                    item.problem,
+
+                "Downtime (Jam)":
+                    item.downtime,
+
+                "Operating Hours (Jam)":
+                    item.operatingHours,
+
+                "HM Awal":
+                    item.hmAwal,
+
+                "HM Akhir":
+                    item.hmAkhir,
+
+                "Status":
+                    item.status,
+
+                "Keterangan":
+                    item.keterangan
+
+            }));
+
+
+        const worksheet =
+            XLSX.utils.json_to_sheet(excelData);
+
+
+        const workbook =
+            XLSX.utils.book_new();
+
+
+        XLSX.utils.book_append_sheet(
+            workbook,
+            worksheet,
+            "Historical BD"
+        );
+
+
+        const unit =
+            document.getElementById("filterUnit").value;
+
+
+        const filename =
+            unit
+                ? `Historical_BD_${unit}.xlsx`
+                : "Historical_Unit_BD.xlsx";
+
+
+        XLSX.writeFile(
+            workbook,
+            filename
+        );
+
+    }
+
+
+    // Escape HTML
+    function escapeHtml(value) {
+
+        if (value === null ||
+            value === undefined) {
+
+            return "";
+
+        }
+
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    // Jalankan saat halaman dibuka
+    filteredData =
+        prepareData();
+
+    loadFilters();
+
+    renderTable();
+
+</script>
+
+</body>
+</html>
