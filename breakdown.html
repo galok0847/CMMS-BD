@@ -1,1 +1,704 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Breakdown - CMMS BD</title>
 
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #172033;
+            color: white;
+            padding: 22px 15px;
+        }
+
+        .logo {
+            padding: 10px 12px 25px;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 20px;
+        }
+
+        .logo h2 {
+            font-size: 22px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin-bottom: 7px;
+        }
+
+        .menu button {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #cbd5e1;
+            text-align: left;
+            padding: 13px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .menu button:hover,
+        .menu button.active {
+            background: #263653;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            padding: 28px;
+            overflow-x: auto;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .header p {
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        .form-box,
+        .table-box {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .form-box h2,
+        .table-box h2 {
+            font-size: 19px;
+            margin-bottom: 18px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .field label {
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        .field textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: #2563eb;
+        }
+
+        .button-row {
+            margin-top: 18px;
+        }
+
+        .btn {
+            padding: 11px 20px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        th {
+            background: #f8fafc;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .empty {
+            color: #64748b;
+            padding: 25px;
+        }
+
+        @media (max-width: 900px) {
+            .form-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+            .sidebar {
+                width: 190px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <h2>CMMS-BD</h2>
+            <p>Maintenance Management System</p>
+        </div>
+
+        <ul class="menu">
+
+            <li>
+                <button onclick="location.href='index.html'">
+                    📊 Dashboard
+                </button>
+            </li>
+
+            <li>
+                <button onclick="location.href='master-unit.html'">
+                    🚜 Master Unit
+                </button>
+            </li>
+
+            <li>
+                <button class="active">
+                    🔧 Breakdown
+                </button>
+            </li>
+
+            <li>
+                <button>
+                    📋 Preventive Maintenance
+                </button>
+            </li>
+
+            <li>
+                <button>
+                    📈 Report
+                </button>
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <main class="content">
+
+        <div class="header">
+            <h1>Input Breakdown</h1>
+            <p>Pencatatan data breakdown unit</p>
+        </div>
+
+
+        <!-- FORM INPUT -->
+        <div class="form-box">
+
+            <h2>Tambah Data Breakdown</h2>
+
+            <div class="form-row">
+
+                <div class="field">
+                    <label>Tanggal</label>
+                    <input type="date" id="tanggal">
+                </div>
+
+                <div class="field">
+                    <label>Unit No</label>
+                    <input
+                        type="text"
+                        id="unitNo"
+                        placeholder="Contoh: EX2003"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Model</label>
+                    <input
+                        type="text"
+                        id="model"
+                        placeholder="Contoh: EX2000"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Type BD</label>
+
+                    <select id="typeBD">
+
+                        <option value="">
+                            Pilih Type BD
+                        </option>
+
+                        <option value="Breakdown Schedule">
+                            Breakdown Schedule
+                        </option>
+
+                        <option value="Unschedule">
+                            Unschedule
+                        </option>
+
+                    </select>
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="field">
+                    <label>Component</label>
+
+                    <input
+                        type="text"
+                        id="component"
+                        placeholder="Contoh: Engine"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Problem</label>
+
+                    <input
+                        type="text"
+                        id="problem"
+                        placeholder="Contoh: Oil Leak"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Downtime (Jam)</label>
+
+                    <input
+                        type="number"
+                        id="downtime"
+                        min="0"
+                        step="0.1"
+                        placeholder="Contoh: 4"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Operating Hours (Jam)</label>
+
+                    <input
+                        type="number"
+                        id="operatingHours"
+                        min="0"
+                        step="0.1"
+                        placeholder="Contoh: 20"
+                    >
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="field">
+                    <label>HM Awal</label>
+
+                    <input
+                        type="number"
+                        id="hmAwal"
+                        min="0"
+                        step="0.1"
+                        placeholder="Contoh: 12500"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>HM Akhir</label>
+
+                    <input
+                        type="number"
+                        id="hmAkhir"
+                        min="0"
+                        step="0.1"
+                        placeholder="Contoh: 12520"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Status</label>
+
+                    <select id="status">
+
+                        <option value="Open">
+                            Open
+                        </option>
+
+                        <option value="Closed">
+                            Closed
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Keterangan</label>
+
+                    <input
+                        type="text"
+                        id="keterangan"
+                        placeholder="Keterangan"
+                    >
+                </div>
+
+            </div>
+
+
+            <div class="button-row">
+
+                <button class="btn" onclick="addBreakdown()">
+                    + Simpan Breakdown
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+        <div class="table-box">
+
+            <h2>Data Breakdown</h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Unit No</th>
+                            <th>Model</th>
+                            <th>Type BD</th>
+                            <th>Component</th>
+                            <th>Problem</th>
+                            <th>Downtime</th>
+                            <th>Operating Hours</th>
+                            <th>HM Awal</th>
+                            <th>HM Akhir</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="breakdownTable">
+
+                        <tr>
+                            <td colspan="13" class="empty">
+                                Belum ada data breakdown
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    let breakdowns = [];
+
+
+    function addBreakdown() {
+
+        const tanggal =
+            document.getElementById("tanggal").value;
+
+        const unitNo =
+            document.getElementById("unitNo").value.trim();
+
+        const model =
+            document.getElementById("model").value.trim();
+
+        const typeBD =
+            document.getElementById("typeBD").value;
+
+        const component =
+            document.getElementById("component").value.trim();
+
+        const problem =
+            document.getElementById("problem").value.trim();
+
+        const downtime =
+            Number(document.getElementById("downtime").value);
+
+        const operatingHours =
+            Number(document.getElementById("operatingHours").value);
+
+        const hmAwal =
+            Number(document.getElementById("hmAwal").value);
+
+        const hmAkhir =
+            Number(document.getElementById("hmAkhir").value);
+
+        const status =
+            document.getElementById("status").value;
+
+        const keterangan =
+            document.getElementById("keterangan").value.trim();
+
+
+        if (
+            !tanggal ||
+            !unitNo ||
+            !model ||
+            !typeBD ||
+            !component ||
+            !problem
+        ) {
+
+            alert(
+                "Tanggal, Unit No, Model, Type BD, Component, dan Problem wajib diisi."
+            );
+
+            return;
+        }
+
+
+        if (downtime < 0 || operatingHours < 0) {
+
+            alert(
+                "Downtime dan Operating Hours tidak boleh negatif."
+            );
+
+            return;
+        }
+
+
+        if (hmAkhir < hmAwal) {
+
+            alert(
+                "HM Akhir tidak boleh lebih kecil dari HM Awal."
+            );
+
+            return;
+        }
+
+
+        breakdowns.push({
+
+            tanggal,
+            unitNo,
+            model,
+            typeBD,
+            component,
+            problem,
+            downtime,
+            operatingHours,
+            hmAwal,
+            hmAkhir,
+            status,
+            keterangan
+
+        });
+
+
+        renderBreakdowns();
+
+
+        document.getElementById("tanggal").value = "";
+        document.getElementById("unitNo").value = "";
+        document.getElementById("model").value = "";
+        document.getElementById("typeBD").value = "";
+        document.getElementById("component").value = "";
+        document.getElementById("problem").value = "";
+        document.getElementById("downtime").value = "";
+        document.getElementById("operatingHours").value = "";
+        document.getElementById("hmAwal").value = "";
+        document.getElementById("hmAkhir").value = "";
+        document.getElementById("status").value = "Open";
+        document.getElementById("keterangan").value = "";
+
+    }
+
+
+    function deleteBreakdown(index) {
+
+        if (
+            confirm("Yakin ingin menghapus data breakdown ini?")
+        ) {
+
+            breakdowns.splice(index, 1);
+
+            renderBreakdowns();
+
+        }
+
+    }
+
+
+    function renderBreakdowns() {
+
+        const table =
+            document.getElementById("breakdownTable");
+
+
+        if (breakdowns.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="13" class="empty">
+                        Belum ada data breakdown
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        table.innerHTML = "";
+
+
+        breakdowns.forEach((item, index) => {
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>${index + 1}</td>
+
+                    <td>${item.tanggal}</td>
+
+                    <td>${item.unitNo}</td>
+
+                    <td>${item.model}</td>
+
+                    <td>${item.typeBD}</td>
+
+                    <td>${item.component}</td>
+
+                    <td>${item.problem}</td>
+
+                    <td>${item.downtime}</td>
+
+                    <td>${item.operatingHours}</td>
+
+                    <td>${item.hmAwal}</td>
+
+                    <td>${item.hmAkhir}</td>
+
+                    <td>${item.status}</td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-danger"
+                            onclick="deleteBreakdown(${index})"
+                        >
+                            Hapus
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+    }
+
+</script>
+
+</body>
+</html>
