@@ -1,1 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMMS - BD</title>
 
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 240px;
+            background: #172033;
+            color: white;
+            padding: 22px 15px;
+        }
+
+        .logo {
+            padding: 10px 12px 25px;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 20px;
+        }
+
+        .logo h2 {
+            font-size: 22px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin-bottom: 7px;
+        }
+
+        .menu button {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #cbd5e1;
+            text-align: left;
+            padding: 13px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .menu button:hover,
+        .menu button.active {
+            background: #263653;
+            color: white;
+        }
+
+        /* CONTENT */
+        .content {
+            flex: 1;
+            padding: 28px;
+            overflow-x: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .header p {
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        /* FILTER */
+        .filter-box {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .filter-box h3 {
+            margin-bottom: 14px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .field input {
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* KPI */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .kpi-card .title {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .kpi-card .value {
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .kpi-card .unit {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        /* TABLE */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .section h2 {
+            margin-bottom: 18px;
+            font-size: 19px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        th {
+            background: #f8fafc;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1000px) {
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 190px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <h2>CMMS-BD</h2>
+            <p>Maintenance Management System</p>
+        </div>
+
+        <ul class="menu">
+
+            <li>
+                <button class="active">
+                    📊 Dashboard
+                </button>
+            </li>
+
+            <li>
+                <button>
+                    🚜 Master Unit
+                </button>
+            </li>
+
+            <li>
+                <button>
+                    🔧 Breakdown
+                </button>
+            </li>
+
+            <li>
+                <button>
+                    📋 Preventive Maintenance
+                </button>
+            </li>
+
+            <li>
+                <button>
+                    📈 Report
+                </button>
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+        <div class="header">
+
+            <div>
+                <h1>Dashboard CMMS</h1>
+                <p>Monitoring Maintenance Unit Breakdown</p>
+            </div>
+
+        </div>
+
+
+        <!-- FILTER PERIODE -->
+        <div class="filter-box">
+
+            <h3>Filter Periode</h3>
+
+            <div class="filter-row">
+
+                <div class="field">
+                    <label>Dari Tanggal</label>
+                    <input type="date" id="startDate">
+                </div>
+
+                <div class="field">
+                    <label>Sampai Tanggal</label>
+                    <input type="date" id="endDate">
+                </div>
+
+                <button class="btn" onclick="applyFilter()">
+                    Terapkan
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- KPI -->
+        <div class="kpi-grid">
+
+            <div class="kpi-card">
+                <div class="title">MA</div>
+                <div class="value" id="maValue">0%</div>
+                <div class="unit">Mechanical Availability</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="title">PA</div>
+                <div class="value" id="paValue">0%</div>
+                <div class="unit">Physical Availability</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="title">MTTR</div>
+                <div class="value" id="mttrValue">0</div>
+                <div class="unit">Jam</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="title">MTBF</div>
+                <div class="value" id="mtbfValue">0</div>
+                <div class="unit">Jam</div>
+            </div>
+
+        </div>
+
+
+        <!-- MA BY MODEL -->
+        <div class="section">
+
+            <h2>MA by Model</h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>MA (%)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="maTable">
+
+                        <tr>
+                            <td colspan="2">Belum ada data</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- PA BY MODEL -->
+        <div class="section">
+
+            <h2>PA by Model</h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>PA (%)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="paTable">
+
+                        <tr>
+                            <td colspan="2">Belum ada data</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- MTTR BY MODEL -->
+        <div class="section">
+
+            <h2>MTTR by Model</h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Total Breakdown</th>
+                            <th>Total Downtime (Jam)</th>
+                            <th>MTTR (Jam)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="mttrTable">
+
+                        <tr>
+                            <td colspan="4">Belum ada data</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- MTBF BY MODEL -->
+        <div class="section">
+
+            <h2>MTBF by Model</h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Total Operating Hours</th>
+                            <th>Total Breakdown</th>
+                            <th>MTBF (Jam)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="mtbfTable">
+
+                        <tr>
+                            <td colspan="4">Belum ada data</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    function applyFilter() {
+
+        const startDate =
+            document.getElementById("startDate").value;
+
+        const endDate =
+            document.getElementById("endDate").value;
+
+        console.log("Periode:", startDate, "sampai", endDate);
+
+        /*
+            Nanti bagian ini kita hubungkan
+            dengan database/data BD.
+
+            Setelah data BD masuk,
+            filter akan menghitung:
+
+            MA
+            PA
+            MTTR
+            MTBF
+
+            berdasarkan periode + model.
+        */
+    }
+
+</script>
+
+</body>
+</html>
