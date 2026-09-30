@@ -331,20 +331,25 @@
 
             </li>
 
-<li>
 
-    <a href="breakdown.html">
-        Breakdown
-    </a>
+            <li>
 
-</li>
-           <li>
+                <a href="breakdown.html">
+                    Breakdown
+                </a>
 
-    <a href="historical-unit-bd.html">
-        Historical Unit BD
-    </a>
+            </li>
 
-</li>
+
+            <!-- HISTORICAL UNIT BD -->
+
+            <li>
+
+                <a href="historical-unit-bd.html">
+                    Historical Unit BD
+                </a>
+
+            </li>
 
         </ul>
 
@@ -565,25 +570,15 @@
 
                         <tr>
 
-                            <th>
-                                No
-                            </th>
+                            <th>No</th>
 
-                            <th>
-                                Model
-                            </th>
+                            <th>Model</th>
 
-                            <th>
-                                Operating Hours
-                            </th>
+                            <th>Operating Hours</th>
 
-                            <th>
-                                Downtime
-                            </th>
+                            <th>Downtime</th>
 
-                            <th>
-                                MA
-                            </th>
+                            <th>MA</th>
 
                         </tr>
 
@@ -621,25 +616,15 @@
 
                         <tr>
 
-                            <th>
-                                No
-                            </th>
+                            <th>No</th>
 
-                            <th>
-                                Model
-                            </th>
+                            <th>Model</th>
 
-                            <th>
-                                Operating Hours
-                            </th>
+                            <th>Operating Hours</th>
 
-                            <th>
-                                Downtime
-                            </th>
+                            <th>Downtime</th>
 
-                            <th>
-                                PA
-                            </th>
+                            <th>PA</th>
 
                         </tr>
 
@@ -677,25 +662,15 @@
 
                         <tr>
 
-                            <th>
-                                No
-                            </th>
+                            <th>No</th>
 
-                            <th>
-                                Model
-                            </th>
+                            <th>Model</th>
 
-                            <th>
-                                Total Breakdown
-                            </th>
+                            <th>Total Breakdown</th>
 
-                            <th>
-                                Total Downtime
-                            </th>
+                            <th>Total Downtime</th>
 
-                            <th>
-                                MTTR
-                            </th>
+                            <th>MTTR</th>
 
                         </tr>
 
@@ -733,25 +708,15 @@
 
                         <tr>
 
-                            <th>
-                                No
-                            </th>
+                            <th>No</th>
 
-                            <th>
-                                Model
-                            </th>
+                            <th>Model</th>
 
-                            <th>
-                                Operating Hours
-                            </th>
+                            <th>Operating Hours</th>
 
-                            <th>
-                                Total Breakdown
-                            </th>
+                            <th>Total Breakdown</th>
 
-                            <th>
-                                MTBF
-                            </th>
+                            <th>MTBF</th>
 
                         </tr>
 
@@ -832,10 +797,6 @@
             let data = [...breakdowns];
 
 
-            /*
-            FILTER TANGGAL MULAI
-            */
-
             if (startDate) {
 
                 data =
@@ -847,10 +808,6 @@
 
             }
 
-
-            /*
-            FILTER TANGGAL AKHIR
-            */
 
             if (endDate) {
 
@@ -918,11 +875,6 @@
                     );
 
 
-                /*
-                SETIAP RECORD BREAKDOWN
-                DIHITUNG SEBAGAI 1 BREAKDOWN
-                */
-
                 models[model].breakdown += 1;
 
             });
@@ -970,12 +922,6 @@
             });
 
 
-
-            /*
-            MTTR
-            Total Downtime / Total Breakdown
-            */
-
             let mttr = 0;
 
 
@@ -988,12 +934,6 @@
             }
 
 
-
-            /*
-            MTBF
-            Total Operating Hours / Breakdown
-            */
-
             let mtbf = 0;
 
 
@@ -1005,13 +945,6 @@
 
             }
 
-
-
-            /*
-            PA
-            Operating Hours /
-            (Operating Hours + Downtime)
-            */
 
             let pa = 0;
 
@@ -1033,19 +966,6 @@
             }
 
 
-
-            /*
-            MA
-
-            Untuk sementara menggunakan
-            availability berdasarkan
-            operating hours dan downtime.
-
-            Struktur MA dapat kita sesuaikan
-            lagi apabila nanti kita tambahkan
-            planned downtime/standby time.
-            */
-
             let ma = 0;
 
 
@@ -1066,7 +986,6 @@
             }
 
 
-
             return {
 
                 ma: ma,
@@ -1085,7 +1004,7 @@
 
         /*
         =====================================================
-        TAMPILKAN KPI UTAMA
+        TAMPILKAN KPI
         =====================================================
         */
 
@@ -1125,7 +1044,7 @@
 
         /*
         =====================================================
-        RENDER MA BY MODEL
+        MA BY MODEL
         =====================================================
         */
 
@@ -1162,7 +1081,6 @@
                 return;
 
             }
-
 
 
             models.forEach(function(item, index) {
@@ -1228,7 +1146,7 @@
 
         /*
         =====================================================
-        RENDER PA BY MODEL
+        PA BY MODEL
         =====================================================
         */
 
@@ -1265,7 +1183,6 @@
                 return;
 
             }
-
 
 
             models.forEach(function(item, index) {
@@ -1331,7 +1248,7 @@
 
         /*
         =====================================================
-        RENDER MTTR BY MODEL
+        MTTR BY MODEL
         =====================================================
         */
 
@@ -1368,7 +1285,6 @@
                 return;
 
             }
-
 
 
             models.forEach(function(item, index) {
@@ -1424,7 +1340,7 @@
 
         /*
         =====================================================
-        RENDER MTBF BY MODEL
+        MTBF BY MODEL
         =====================================================
         */
 
@@ -1461,7 +1377,6 @@
                 return;
 
             }
-
 
 
             models.forEach(function(item, index) {
@@ -1536,10 +1451,6 @@
                 ).value;
 
 
-            /*
-            VALIDASI
-            */
-
             if (
                 startDate &&
                 endDate &&
@@ -1555,36 +1466,20 @@
             }
 
 
-            /*
-            AMBIL DATA SESUAI PERIODE
-            */
-
             const filteredData =
                 getFilteredData();
 
-
-            /*
-            HITUNG KPI
-            */
 
             renderKPI(
                 filteredData
             );
 
 
-            /*
-            HITUNG PER MODEL
-            */
-
             const models =
                 calculateByModel(
                     filteredData
                 );
 
-
-            /*
-            TAMPILKAN TABLE
-            */
 
             renderMATable(
                 models
@@ -1642,11 +1537,6 @@
                 `${year}-${month}-${day}`;
 
 
-            /*
-            DEFAULT:
-            1 BULAN BERJALAN
-            */
-
             const firstDay =
                 `${year}-${month}-01`;
 
@@ -1663,19 +1553,11 @@
                 todayString;
 
 
-            /*
-            TAMPILKAN DATA
-            */
-
             applyFilter();
 
         }
 
 
-
-        /*
-        JALANKAN SAAT HALAMAN DIBUKA
-        */
 
         loadDashboard();
 
