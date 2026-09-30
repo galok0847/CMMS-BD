@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMMS - BD</title>
+
+    <title>CMMS BD - Dashboard</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -14,37 +16,36 @@
         }
 
         body {
-            background: #f4f6f8;
-            color: #1f2937;
-        }
-
-        .app {
             display: flex;
-            min-height: 100vh;
+            background: #f4f6f8;
+            color: #333;
         }
 
-        /* SIDEBAR */
+        /* =========================
+           SIDEBAR
+        ========================= */
+
         .sidebar {
             width: 240px;
-            background: #172033;
+            min-height: 100vh;
+            background: #1f2937;
             color: white;
-            padding: 22px 15px;
+            padding: 20px;
         }
 
         .logo {
-            padding: 10px 12px 25px;
-            border-bottom: 1px solid #334155;
-            margin-bottom: 20px;
+            text-align: center;
+            margin-bottom: 35px;
         }
 
         .logo h2 {
             font-size: 22px;
+            margin-bottom: 5px;
         }
 
         .logo p {
             font-size: 12px;
-            color: #94a3b8;
-            margin-top: 5px;
+            color: #9ca3af;
         }
 
         .menu {
@@ -52,61 +53,69 @@
         }
 
         .menu li {
-            margin-bottom: 7px;
+            margin-bottom: 8px;
         }
 
-        .menu button {
-            width: 100%;
-            border: none;
-            background: transparent;
-            color: #cbd5e1;
-            text-align: left;
-            padding: 13px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
+        .menu a {
+            display: block;
+            padding: 12px 15px;
+            color: #d1d5db;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: 0.2s;
         }
 
-        .menu button:hover,
-        .menu button.active {
-            background: #263653;
+        .menu a:hover {
+            background: #374151;
             color: white;
         }
 
-        /* CONTENT */
+        .menu a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
         .content {
             flex: 1;
-            padding: 28px;
-            overflow-x: auto;
+            padding: 30px;
         }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 25px;
         }
 
         .header h1 {
             font-size: 28px;
+            color: #111827;
         }
 
         .header p {
-            color: #64748b;
             margin-top: 5px;
+            color: #6b7280;
         }
 
-        /* FILTER */
-        .filter-box {
+
+        /* =========================
+           FILTER
+        ========================= */
+
+        .filter-card {
             background: white;
-            padding: 18px;
-            border-radius: 12px;
-            margin-bottom: 22px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
         }
 
-        .filter-box h3 {
-            margin-bottom: 14px;
+        .filter-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
         }
 
         .filter-row {
@@ -116,115 +125,157 @@
             flex-wrap: wrap;
         }
 
-        .field {
+        .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
         }
 
-        .field label {
+        .filter-group label {
             font-size: 13px;
-            color: #64748b;
+            font-weight: bold;
+            margin-bottom: 6px;
         }
 
-        .field input {
+        .filter-group input {
             padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 7px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            min-width: 180px;
         }
 
-        .btn {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 7px;
+        .btn-filter {
+            padding: 10px 20px;
             background: #2563eb;
             color: white;
+            border: none;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
         }
 
-        .btn:hover {
+        .btn-filter:hover {
             background: #1d4ed8;
         }
 
-        /* KPI */
+
+        /* =========================
+           KPI CARD
+        ========================= */
+
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
+            gap: 20px;
             margin-bottom: 25px;
         }
 
         .kpi-card {
             background: white;
-            border-radius: 12px;
             padding: 22px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
-        .kpi-card .title {
-            color: #64748b;
+        .kpi-title {
+            color: #6b7280;
             font-size: 14px;
+            margin-bottom: 10px;
         }
 
-        .kpi-card .value {
+        .kpi-value {
             font-size: 30px;
             font-weight: bold;
-            margin-top: 10px;
+            color: #111827;
         }
 
-        .kpi-card .unit {
+        .kpi-unit {
             font-size: 13px;
-            color: #64748b;
+            color: #6b7280;
+            margin-top: 5px;
         }
 
-        /* TABLE */
-        .section {
+
+        /* =========================
+           CARD
+        ========================= */
+
+        .card {
             background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 22px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
         }
 
-        .section h2 {
-            margin-bottom: 18px;
-            font-size: 19px;
+        .card h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #111827;
         }
 
-        .table-wrapper {
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-container {
             overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: center;
+            min-width: 700px;
         }
 
         th {
-            background: #f8fafc;
+            background: #1f2937;
+            color: white;
+            padding: 12px;
+            text-align: left;
             font-size: 13px;
         }
 
         td {
-            font-size: 14px;
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
         }
 
-        /* RESPONSIVE */
+        tr:hover {
+            background: #f9fafb;
+        }
+
+
+        /* =========================
+           INFO
+        ========================= */
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+            font-size: 13px;
+            border-radius: 4px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
         @media (max-width: 1000px) {
+
             .kpi-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
         }
 
         @media (max-width: 700px) {
+
             .sidebar {
                 width: 190px;
             }
@@ -232,52 +283,61 @@
             .kpi-grid {
                 grid-template-columns: 1fr;
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-<div class="app">
 
-    <!-- SIDEBAR -->
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
     <aside class="sidebar">
 
         <div class="logo">
-            <h2>CMMS-BD</h2>
-            <p>Maintenance Management System</p>
+
+            <h2>CMMS BD</h2>
+
+            <p>Maintenance System</p>
+
         </div>
+
 
         <ul class="menu">
 
             <li>
-                <button class="active">
-                    📊 Dashboard
-                </button>
+
+                <a
+                    href="index.html"
+                    class="active"
+                >
+                    Dashboard
+                </a>
+
             </li>
 
-            <li>
-    <button onclick="location.href='master-unit.html'">
-        🚜 Master Unit
-    </button>
-</li>
-
-           <li>
-    <button onclick="location.href='breakdown.html'">
-        🔧 Breakdown
-    </button>
-</li>
 
             <li>
-                <button>
-                    📋 Preventive Maintenance
-                </button>
+
+                <a href="master-unit.html">
+                    Master Unit
+                </a>
+
             </li>
 
+
             <li>
-                <button>
-                    📈 Report
-                </button>
+
+                <a href="breakdown.html">
+                    Breakdown
+                </a>
+
             </li>
 
         </ul>
@@ -285,96 +345,246 @@
     </aside>
 
 
-    <!-- MAIN CONTENT -->
+
+    <!-- =========================
+         CONTENT
+    ========================= -->
+
     <main class="content">
+
+
+        <!-- HEADER -->
 
         <div class="header">
 
-            <div>
-                <h1>Dashboard CMMS</h1>
-                <p>Monitoring Maintenance Unit Breakdown</p>
-            </div>
+            <h1>
+                Dashboard
+            </h1>
+
+            <p>
+                Monitoring Performance Unit BD
+            </p>
 
         </div>
 
 
-        <!-- FILTER PERIODE -->
-        <div class="filter-box">
 
-            <h3>Filter Periode</h3>
+        <!-- =========================
+             FILTER TANGGAL
+        ========================= -->
+
+        <div class="filter-card">
+
+            <div class="filter-title">
+                Filter Periode
+            </div>
+
 
             <div class="filter-row">
 
-                <div class="field">
-                    <label>Dari Tanggal</label>
-                    <input type="date" id="startDate">
+
+                <div class="filter-group">
+
+                    <label>
+                        Tanggal Mulai
+                    </label>
+
+                    <input
+                        type="date"
+                        id="startDate"
+                    >
+
                 </div>
 
-                <div class="field">
-                    <label>Sampai Tanggal</label>
-                    <input type="date" id="endDate">
+
+                <div class="filter-group">
+
+                    <label>
+                        Tanggal Akhir
+                    </label>
+
+                    <input
+                        type="date"
+                        id="endDate"
+                    >
+
                 </div>
 
-                <button class="btn" onclick="applyFilter()">
+
+                <button
+                    class="btn-filter"
+                    onclick="applyFilter()"
+                >
                     Terapkan
                 </button>
 
+
             </div>
 
         </div>
 
 
-        <!-- KPI -->
+
+        <!-- =========================
+             INFO
+        ========================= -->
+
+        <div class="info-box">
+
+            Data Dashboard diambil dari data Breakdown
+            yang tersimpan di sistem.
+
+            Pilih periode tanggal kemudian klik
+            <b>Terapkan</b> untuk menghitung KPI.
+
+        </div>
+
+
+
+        <!-- =========================
+             KPI UTAMA
+        ========================= -->
+
         <div class="kpi-grid">
 
-            <div class="kpi-card">
-                <div class="title">MA</div>
-                <div class="value" id="maValue">0%</div>
-                <div class="unit">Mechanical Availability</div>
-            </div>
+
+            <!-- MA -->
 
             <div class="kpi-card">
-                <div class="title">PA</div>
-                <div class="value" id="paValue">0%</div>
-                <div class="unit">Physical Availability</div>
+
+                <div class="kpi-title">
+                    MA
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="maValue"
+                >
+                    0.00%
+                </div>
+
+                <div class="kpi-unit">
+                    Mechanical Availability
+                </div>
+
             </div>
 
-            <div class="kpi-card">
-                <div class="title">MTTR</div>
-                <div class="value" id="mttrValue">0</div>
-                <div class="unit">Jam</div>
-            </div>
+
+            <!-- PA -->
 
             <div class="kpi-card">
-                <div class="title">MTBF</div>
-                <div class="value" id="mtbfValue">0</div>
-                <div class="unit">Jam</div>
+
+                <div class="kpi-title">
+                    PA
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="paValue"
+                >
+                    0.00%
+                </div>
+
+                <div class="kpi-unit">
+                    Physical Availability
+                </div>
+
             </div>
+
+
+            <!-- MTTR -->
+
+            <div class="kpi-card">
+
+                <div class="kpi-title">
+                    MTTR
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="mttrValue"
+                >
+                    0.00
+                </div>
+
+                <div class="kpi-unit">
+                    Jam
+                </div>
+
+            </div>
+
+
+            <!-- MTBF -->
+
+            <div class="kpi-card">
+
+                <div class="kpi-title">
+                    MTBF
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="mtbfValue"
+                >
+                    0.00
+                </div>
+
+                <div class="kpi-unit">
+                    Jam
+                </div>
+
+            </div>
+
 
         </div>
 
 
-        <!-- MA BY MODEL -->
-        <div class="section">
 
-            <h2>MA by Model</h2>
+        <!-- =========================
+             MA BY MODEL
+        ========================= -->
 
-            <div class="table-wrapper">
+        <div class="card">
+
+            <h2>
+                MA by Model
+            </h2>
+
+
+            <div class="table-container">
 
                 <table>
 
                     <thead>
+
                         <tr>
-                            <th>Model</th>
-                            <th>MA (%)</th>
+
+                            <th>
+                                No
+                            </th>
+
+                            <th>
+                                Model
+                            </th>
+
+                            <th>
+                                Operating Hours
+                            </th>
+
+                            <th>
+                                Downtime
+                            </th>
+
+                            <th>
+                                MA
+                            </th>
+
                         </tr>
+
                     </thead>
 
-                    <tbody id="maTable">
 
-                        <tr>
-                            <td colspan="2">Belum ada data</td>
-                        </tr>
+                    <tbody id="maTableBody">
 
                     </tbody>
 
@@ -385,27 +595,52 @@
         </div>
 
 
-        <!-- PA BY MODEL -->
-        <div class="section">
 
-            <h2>PA by Model</h2>
+        <!-- =========================
+             PA BY MODEL
+        ========================= -->
 
-            <div class="table-wrapper">
+        <div class="card">
+
+            <h2>
+                PA by Model
+            </h2>
+
+
+            <div class="table-container">
 
                 <table>
 
                     <thead>
+
                         <tr>
-                            <th>Model</th>
-                            <th>PA (%)</th>
+
+                            <th>
+                                No
+                            </th>
+
+                            <th>
+                                Model
+                            </th>
+
+                            <th>
+                                Operating Hours
+                            </th>
+
+                            <th>
+                                Downtime
+                            </th>
+
+                            <th>
+                                PA
+                            </th>
+
                         </tr>
+
                     </thead>
 
-                    <tbody id="paTable">
 
-                        <tr>
-                            <td colspan="2">Belum ada data</td>
-                        </tr>
+                    <tbody id="paTableBody">
 
                     </tbody>
 
@@ -416,29 +651,52 @@
         </div>
 
 
-        <!-- MTTR BY MODEL -->
-        <div class="section">
 
-            <h2>MTTR by Model</h2>
+        <!-- =========================
+             MTTR BY MODEL
+        ========================= -->
 
-            <div class="table-wrapper">
+        <div class="card">
+
+            <h2>
+                MTTR by Model
+            </h2>
+
+
+            <div class="table-container">
 
                 <table>
 
                     <thead>
+
                         <tr>
-                            <th>Model</th>
-                            <th>Total Breakdown</th>
-                            <th>Total Downtime (Jam)</th>
-                            <th>MTTR (Jam)</th>
+
+                            <th>
+                                No
+                            </th>
+
+                            <th>
+                                Model
+                            </th>
+
+                            <th>
+                                Total Breakdown
+                            </th>
+
+                            <th>
+                                Total Downtime
+                            </th>
+
+                            <th>
+                                MTTR
+                            </th>
+
                         </tr>
+
                     </thead>
 
-                    <tbody id="mttrTable">
 
-                        <tr>
-                            <td colspan="4">Belum ada data</td>
-                        </tr>
+                    <tbody id="mttrTableBody">
 
                     </tbody>
 
@@ -449,29 +707,52 @@
         </div>
 
 
-        <!-- MTBF BY MODEL -->
-        <div class="section">
 
-            <h2>MTBF by Model</h2>
+        <!-- =========================
+             MTBF BY MODEL
+        ========================= -->
 
-            <div class="table-wrapper">
+        <div class="card">
+
+            <h2>
+                MTBF by Model
+            </h2>
+
+
+            <div class="table-container">
 
                 <table>
 
                     <thead>
+
                         <tr>
-                            <th>Model</th>
-                            <th>Total Operating Hours</th>
-                            <th>Total Breakdown</th>
-                            <th>MTBF (Jam)</th>
+
+                            <th>
+                                No
+                            </th>
+
+                            <th>
+                                Model
+                            </th>
+
+                            <th>
+                                Operating Hours
+                            </th>
+
+                            <th>
+                                Total Breakdown
+                            </th>
+
+                            <th>
+                                MTBF
+                            </th>
+
                         </tr>
+
                     </thead>
 
-                    <tbody id="mtbfTable">
 
-                        <tr>
-                            <td colspan="4">Belum ada data</td>
-                        </tr>
+                    <tbody id="mtbfTableBody">
 
                     </tbody>
 
@@ -480,41 +761,921 @@
             </div>
 
         </div>
+
 
     </main>
 
-</div>
 
 
-<script>
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
 
-    function applyFilter() {
+    <script>
 
-        const startDate =
-            document.getElementById("startDate").value;
-
-        const endDate =
-            document.getElementById("endDate").value;
-
-        console.log("Periode:", startDate, "sampai", endDate);
 
         /*
-            Nanti bagian ini kita hubungkan
-            dengan database/data BD.
-
-            Setelah data BD masuk,
-            filter akan menghitung:
-
-            MA
-            PA
-            MTTR
-            MTBF
-
-            berdasarkan periode + model.
+        =====================================================
+        AMBIL DATA BREAKDOWN
+        =====================================================
         */
-    }
 
-</script>
+        let breakdowns =
+            JSON.parse(
+                localStorage.getItem("cmms_breakdowns")
+            ) || [];
+
+
+
+        /*
+        =====================================================
+        FORMAT ANGKA
+        =====================================================
+        */
+
+        function formatNumber(value) {
+
+            return Number(value || 0)
+                .toFixed(2);
+
+        }
+
+
+
+        /*
+        =====================================================
+        FILTER DATA
+        =====================================================
+        */
+
+        function getFilteredData() {
+
+
+            const startDate =
+                document.getElementById(
+                    "startDate"
+                ).value;
+
+
+            const endDate =
+                document.getElementById(
+                    "endDate"
+                ).value;
+
+
+            let data = [...breakdowns];
+
+
+            /*
+            FILTER TANGGAL MULAI
+            */
+
+            if (startDate) {
+
+                data =
+                    data.filter(function(item) {
+
+                        return item.tanggal >= startDate;
+
+                    });
+
+            }
+
+
+            /*
+            FILTER TANGGAL AKHIR
+            */
+
+            if (endDate) {
+
+                data =
+                    data.filter(function(item) {
+
+                        return item.tanggal <= endDate;
+
+                    });
+
+            }
+
+
+            return data;
+
+        }
+
+
+
+        /*
+        =====================================================
+        HITUNG DATA PER MODEL
+        =====================================================
+        */
+
+        function calculateByModel(data) {
+
+
+            const models = {};
+
+
+            data.forEach(function(item) {
+
+
+                const model =
+                    item.model || "Tidak Ada Model";
+
+
+                if (!models[model]) {
+
+                    models[model] = {
+
+                        model: model,
+
+                        operatingHours: 0,
+
+                        downtime: 0,
+
+                        breakdown: 0
+
+                    };
+
+                }
+
+
+                models[model].operatingHours +=
+                    Number(
+                        item.operatingHours || 0
+                    );
+
+
+                models[model].downtime +=
+                    Number(
+                        item.downtime || 0
+                    );
+
+
+                /*
+                SETIAP RECORD BREAKDOWN
+                DIHITUNG SEBAGAI 1 BREAKDOWN
+                */
+
+                models[model].breakdown += 1;
+
+            });
+
+
+            return Object.values(models);
+
+        }
+
+
+
+        /*
+        =====================================================
+        HITUNG KPI
+        =====================================================
+        */
+
+        function calculateKPI(data) {
+
+
+            let totalOperatingHours = 0;
+
+            let totalDowntime = 0;
+
+            let totalBreakdown = 0;
+
+
+            data.forEach(function(item) {
+
+
+                totalOperatingHours +=
+                    Number(
+                        item.operatingHours || 0
+                    );
+
+
+                totalDowntime +=
+                    Number(
+                        item.downtime || 0
+                    );
+
+
+                totalBreakdown += 1;
+
+            });
+
+
+
+            /*
+            MTTR
+            Total Downtime / Total Breakdown
+            */
+
+            let mttr = 0;
+
+
+            if (totalBreakdown > 0) {
+
+                mttr =
+                    totalDowntime /
+                    totalBreakdown;
+
+            }
+
+
+
+            /*
+            MTBF
+            Total Operating Hours / Breakdown
+            */
+
+            let mtbf = 0;
+
+
+            if (totalBreakdown > 0) {
+
+                mtbf =
+                    totalOperatingHours /
+                    totalBreakdown;
+
+            }
+
+
+
+            /*
+            PA
+            Operating Hours /
+            (Operating Hours + Downtime)
+            */
+
+            let pa = 0;
+
+
+            if (
+                totalOperatingHours +
+                totalDowntime > 0
+            ) {
+
+                pa =
+                    (
+                        totalOperatingHours /
+                        (
+                            totalOperatingHours +
+                            totalDowntime
+                        )
+                    ) * 100;
+
+            }
+
+
+
+            /*
+            MA
+
+            Untuk sementara menggunakan
+            availability berdasarkan
+            operating hours dan downtime.
+
+            Struktur MA dapat kita sesuaikan
+            lagi apabila nanti kita tambahkan
+            planned downtime/standby time.
+            */
+
+            let ma = 0;
+
+
+            if (
+                totalOperatingHours +
+                totalDowntime > 0
+            ) {
+
+                ma =
+                    (
+                        totalOperatingHours /
+                        (
+                            totalOperatingHours +
+                            totalDowntime
+                        )
+                    ) * 100;
+
+            }
+
+
+
+            return {
+
+                ma: ma,
+
+                pa: pa,
+
+                mttr: mttr,
+
+                mtbf: mtbf
+
+            };
+
+        }
+
+
+
+        /*
+        =====================================================
+        TAMPILKAN KPI UTAMA
+        =====================================================
+        */
+
+        function renderKPI(data) {
+
+
+            const kpi =
+                calculateKPI(data);
+
+
+            document.getElementById(
+                "maValue"
+            ).textContent =
+                formatNumber(kpi.ma) + "%";
+
+
+            document.getElementById(
+                "paValue"
+            ).textContent =
+                formatNumber(kpi.pa) + "%";
+
+
+            document.getElementById(
+                "mttrValue"
+            ).textContent =
+                formatNumber(kpi.mttr);
+
+
+            document.getElementById(
+                "mtbfValue"
+            ).textContent =
+                formatNumber(kpi.mtbf);
+
+        }
+
+
+
+        /*
+        =====================================================
+        RENDER MA BY MODEL
+        =====================================================
+        */
+
+        function renderMATable(models) {
+
+
+            const tbody =
+                document.getElementById(
+                    "maTableBody"
+                );
+
+
+            tbody.innerHTML = "";
+
+
+            if (models.length === 0) {
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            style="text-align:center;"
+                        >
+                            Belum ada data
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            models.forEach(function(item, index) {
+
+
+                let ma = 0;
+
+
+                if (
+                    item.operatingHours +
+                    item.downtime > 0
+                ) {
+
+                    ma =
+                        (
+                            item.operatingHours /
+                            (
+                                item.operatingHours +
+                                item.downtime
+                            )
+                        ) * 100;
+
+                }
+
+
+                tbody.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            ${index + 1}
+                        </td>
+
+                        <td>
+                            ${item.model}
+                        </td>
+
+                        <td>
+                            ${formatNumber(
+                                item.operatingHours
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatNumber(
+                                item.downtime
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatNumber(ma)}%
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+        }
+
+
+
+        /*
+        =====================================================
+        RENDER PA BY MODEL
+        =====================================================
+        */
+
+        function renderPATable(models) {
+
+
+            const tbody =
+                document.getElementById(
+                    "paTableBody"
+                );
+
+
+            tbody.innerHTML = "";
+
+
+            if (models.length === 0) {
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            style="text-align:center;"
+                        >
+                            Belum ada data
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            models.forEach(function(item, index) {
+
+
+                let pa = 0;
+
+
+                if (
+                    item.operatingHours +
+                    item.downtime > 0
+                ) {
+
+                    pa =
+                        (
+                            item.operatingHours /
+                            (
+                                item.operatingHours +
+                                item.downtime
+                            )
+                        ) * 100;
+
+                }
+
+
+                tbody.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            ${index + 1}
+                        </td>
+
+                        <td>
+                            ${item.model}
+                        </td>
+
+                        <td>
+                            ${formatNumber(
+                                item.operatingHours
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatNumber(
+                                item.downtime
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatNumber(pa)}%
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+        }
+
+
+
+        /*
+        =====================================================
+        RENDER MTTR BY MODEL
+        =====================================================
+        */
+
+        function renderMTTRTable(models) {
+
+
+            const tbody =
+                document.getElementById(
+                    "mttrTableBody"
+                );
+
+
+            tbody.innerHTML = "";
+
+
+            if (models.length === 0) {
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            style="text-align:center;"
+                        >
+                            Belum ada data
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            models.forEach(function(item, index) {
+
+
+                let mttr = 0;
+
+
+                if (item.breakdown > 0) {
+
+                    mttr =
+                        item.downtime /
+                        item.breakdown;
+
+                }
+
+
+                tbody.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            ${index + 1}
+                        </td>
+
+                        <td>
+                            ${item.model}
+                        </td>
+
+                        <td>
+                            ${item.breakdown}
+                        </td>
+
+                        <td>
+                            ${formatNumber(
+                                item.downtime
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatNumber(mttr)}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+        }
+
+
+
+        /*
+        =====================================================
+        RENDER MTBF BY MODEL
+        =====================================================
+        */
+
+        function renderMTBFTable(models) {
+
+
+            const tbody =
+                document.getElementById(
+                    "mtbfTableBody"
+                );
+
+
+            tbody.innerHTML = "";
+
+
+            if (models.length === 0) {
+
+                tbody.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            style="text-align:center;"
+                        >
+                            Belum ada data
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            models.forEach(function(item, index) {
+
+
+                let mtbf = 0;
+
+
+                if (item.breakdown > 0) {
+
+                    mtbf =
+                        item.operatingHours /
+                        item.breakdown;
+
+                }
+
+
+                tbody.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            ${index + 1}
+                        </td>
+
+                        <td>
+                            ${item.model}
+                        </td>
+
+                        <td>
+                            ${formatNumber(
+                                item.operatingHours
+                            )}
+                        </td>
+
+                        <td>
+                            ${item.breakdown}
+                        </td>
+
+                        <td>
+                            ${formatNumber(mtbf)}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+        }
+
+
+
+        /*
+        =====================================================
+        APPLY FILTER
+        =====================================================
+        */
+
+        function applyFilter() {
+
+
+            const startDate =
+                document.getElementById(
+                    "startDate"
+                ).value;
+
+
+            const endDate =
+                document.getElementById(
+                    "endDate"
+                ).value;
+
+
+            /*
+            VALIDASI
+            */
+
+            if (
+                startDate &&
+                endDate &&
+                startDate > endDate
+            ) {
+
+                alert(
+                    "Tanggal mulai tidak boleh lebih besar dari tanggal akhir."
+                );
+
+                return;
+
+            }
+
+
+            /*
+            AMBIL DATA SESUAI PERIODE
+            */
+
+            const filteredData =
+                getFilteredData();
+
+
+            /*
+            HITUNG KPI
+            */
+
+            renderKPI(
+                filteredData
+            );
+
+
+            /*
+            HITUNG PER MODEL
+            */
+
+            const models =
+                calculateByModel(
+                    filteredData
+                );
+
+
+            /*
+            TAMPILKAN TABLE
+            */
+
+            renderMATable(
+                models
+            );
+
+
+            renderPATable(
+                models
+            );
+
+
+            renderMTTRTable(
+                models
+            );
+
+
+            renderMTBFTable(
+                models
+            );
+
+        }
+
+
+
+        /*
+        =====================================================
+        LOAD DASHBOARD
+        =====================================================
+        */
+
+        function loadDashboard() {
+
+
+            const today =
+                new Date();
+
+
+            const year =
+                today.getFullYear();
+
+
+            const month =
+                String(
+                    today.getMonth() + 1
+                ).padStart(2, "0");
+
+
+            const day =
+                String(
+                    today.getDate()
+                ).padStart(2, "0");
+
+
+            const todayString =
+                `${year}-${month}-${day}`;
+
+
+            /*
+            DEFAULT:
+            1 BULAN BERJALAN
+            */
+
+            const firstDay =
+                `${year}-${month}-01`;
+
+
+            document.getElementById(
+                "startDate"
+            ).value =
+                firstDay;
+
+
+            document.getElementById(
+                "endDate"
+            ).value =
+                todayString;
+
+
+            /*
+            TAMPILKAN DATA
+            */
+
+            applyFilter();
+
+        }
+
+
+
+        /*
+        JALANKAN SAAT HALAMAN DIBUKA
+        */
+
+        loadDashboard();
+
+
+    </script>
+
 
 </body>
 </html>
