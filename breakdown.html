@@ -1,1394 +1,1188 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Breakdown - CMMS BD</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breakdown - CMMS BD</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+<style>
+    * {
+        box-sizing: border-box;
+    }
 
-        body {
-            display: flex;
-            background: #f4f6f8;
-            color: #333;
-        }
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f6f9;
+        color: #333;
+    }
 
-        /* SIDEBAR */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 240px;
+        height: 100vh;
+        background: #111827;
+        color: white;
+        padding-top: 20px;
+    }
+
+    .logo {
+        text-align: center;
+        padding: 10px 15px 25px;
+        border-bottom: 1px solid #374151;
+    }
+
+    .logo h2 {
+        margin: 0;
+        font-size: 22px;
+    }
+
+    .logo p {
+        margin: 5px 0 0;
+        font-size: 12px;
+        color: #9ca3af;
+    }
+
+    .menu {
+        padding-top: 15px;
+    }
+
+    .menu a {
+        display: block;
+        padding: 14px 22px;
+        color: #d1d5db;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    .menu a:hover {
+        background: #1f2937;
+        color: white;
+    }
+
+    .menu a.active {
+        background: #2563eb;
+        color: white;
+    }
+
+    .content {
+        margin-left: 240px;
+        padding: 25px;
+    }
+
+    .header {
+        margin-bottom: 20px;
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 28px;
+    }
+
+    .header p {
+        margin-top: 6px;
+        color: #6b7280;
+    }
+
+    .card {
+        background: white;
+        border-radius: 10px;
+        padding: 22px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 20px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group.full {
+        grid-column: span 3;
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 7px;
+        font-size: 13px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+        background: white;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        border-color: #2563eb;
+    }
+
+    input[readonly] {
+        background: #f3f4f6;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .button-group {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    button {
+        border: none;
+        padding: 10px 18px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .btn-save {
+        background: #2563eb;
+        color: white;
+    }
+
+    .btn-save:hover {
+        background: #1d4ed8;
+    }
+
+    .btn-reset {
+        background: #6b7280;
+        color: white;
+    }
+
+    .btn-reset:hover {
+        background: #4b5563;
+    }
+
+    .btn-edit {
+        background: #f59e0b;
+        color: white;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .btn-delete {
+        background: #dc2626;
+        color: white;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 1300px;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        border-bottom: 1px solid #e5e7eb;
+        text-align: left;
+        font-size: 13px;
+        vertical-align: top;
+    }
+
+    th {
+        background: #f3f4f6;
+        font-weight: bold;
+    }
+
+    tr:hover td {
+        background: #f9fafb;
+    }
+
+    .empty {
+        text-align: center;
+        color: #6b7280;
+        padding: 25px;
+    }
+
+    @media (max-width: 900px) {
         .sidebar {
-            width: 240px;
-            min-height: 100vh;
-            background: #1f2937;
-            color: white;
-            padding: 20px;
+            width: 200px;
         }
 
-        .logo {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        .logo h2 {
-            font-size: 22px;
-            margin-bottom: 5px;
-        }
-
-        .logo p {
-            font-size: 12px;
-            color: #9ca3af;
-        }
-
-        .menu {
-            list-style: none;
-        }
-
-        .menu li {
-            margin-bottom: 8px;
-        }
-
-        .menu a {
-            display: block;
-            padding: 12px 15px;
-            color: #d1d5db;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: 0.2s;
-        }
-
-        .menu a:hover {
-            background: #374151;
-            color: white;
-        }
-
-        .menu a.active {
-            background: #2563eb;
-            color: white;
-        }
-
-        /* CONTENT */
         .content {
-            flex: 1;
-            padding: 30px;
+            margin-left: 200px;
         }
 
-        .header {
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            font-size: 28px;
-            color: #111827;
-        }
-
-        .header p {
-            margin-top: 5px;
-            color: #6b7280;
-        }
-
-        /* CARD */
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            margin-bottom: 25px;
-        }
-
-        .card h2 {
-            margin-bottom: 20px;
-            font-size: 20px;
-            color: #111827;
-        }
-
-        /* FORM */
         .form-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
+        .form-group.full {
+            grid-column: span 2;
         }
+    }
 
-        .form-group label {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 7px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 14px;
-            outline: none;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #2563eb;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .full {
-            grid-column: span 3;
-        }
-
-        /* BUTTON */
-        .button-area {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        button {
-            border: none;
-            padding: 11px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .btn-primary {
-            background: #2563eb;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #1d4ed8;
-        }
-
-        .btn-secondary {
-            background: #6b7280;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #4b5563;
-        }
-
-        /* TABLE */
-        .table-container {
-            overflow-x: auto;
-        }
-
-        table {
+    @media (max-width: 650px) {
+        .sidebar {
+            position: relative;
             width: 100%;
-            border-collapse: collapse;
-            min-width: 1500px;
+            height: auto;
         }
 
-        th {
-            background: #1f2937;
-            color: white;
-            padding: 12px 10px;
-            text-align: left;
-            font-size: 13px;
+        .content {
+            margin-left: 0;
         }
 
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #e5e7eb;
-            font-size: 13px;
+        .form-grid {
+            grid-template-columns: 1fr;
         }
 
-        tr:hover {
-            background: #f9fafb;
+        .form-group.full {
+            grid-column: span 1;
         }
-
-        .btn-edit {
-            background: #f59e0b;
-            color: white;
-            padding: 6px 10px;
-            font-size: 12px;
-        }
-
-        .btn-delete {
-            background: #dc2626;
-            color: white;
-            padding: 6px 10px;
-            font-size: 12px;
-            margin-left: 5px;
-        }
-
-        .status-open {
-            color: #dc2626;
-            font-weight: bold;
-        }
-
-        .status-closed {
-            color: #16a34a;
-            font-weight: bold;
-        }
-
-        /* READONLY */
-        input[readonly] {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
-
-        @media (max-width: 900px) {
-            .sidebar {
-                width: 190px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .full {
-                grid-column: span 1;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 
 <body>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+<!-- SIDEBAR -->
+<div class="sidebar">
 
-        <div class="logo">
-            <h2>CMMS BD</h2>
-            <p>Maintenance System</p>
-        </div>
+    <div class="logo">
+        <h2>CMMS BD</h2>
+        <p>Maintenance System</p>
+    </div>
 
-        <ul class="menu">
+    <div class="menu">
+        <a href="index.html">Dashboard</a>
+        <a href="master-unit.html">Master Unit</a>
+        <a href="breakdown.html" class="active">Breakdown</a>
+        <a href="historical-unit-bd.html">Historical Unit BD</a>
+    </div>
 
-            <li>
-                <a href="index.html">
-                    Dashboard
-                </a>
-            </li>
-
-            <li>
-                <a href="master-unit.html">
-                    Master Unit
-                </a>
-            </li>
-
-            <li>
-                <a href="breakdown.html" class="active">
-                    Breakdown
-                </a>
-            </li>
-
-            <li>
-                <a href="historical-unit-bd.html">
-                    Historical Unit BD
-                </a>
-            </li>
-
-        </ul>
-
-    </aside>
+</div>
 
 
-    <!-- CONTENT -->
-    <main class="content">
+<!-- CONTENT -->
+<div class="content">
 
-        <div class="header">
-            <h1>Breakdown</h1>
-            <p>Input dan monitoring data breakdown unit</p>
-        </div>
-
-
-        <!-- FORM INPUT -->
-        <div class="card">
-
-            <h2>Input Breakdown</h2>
-
-            <form id="breakdownForm">
-
-                <div class="form-grid">
-
-                    <!-- TANGGAL -->
-                    <div class="form-group">
-                        <label>Tanggal</label>
-                        <input
-                            type="date"
-                            id="tanggal"
-                            required
-                        >
-                    </div>
+    <div class="header">
+        <h1>Breakdown</h1>
+        <p>Input data breakdown unit</p>
+    </div>
 
 
-                    <!-- UNIT -->
-                    <div class="form-group">
-                        <label>Unit No</label>
+    <!-- FORM -->
+    <div class="card">
 
-                        <select
-                            id="unitNo"
-                            required
-                        >
-                            <option value="">
-                                -- Pilih Unit --
-                            </option>
-                        </select>
-                    </div>
+        <h2>Input Breakdown</h2>
 
+        <form id="breakdownForm">
 
-                    <!-- MODEL -->
-                    <div class="form-group">
-                        <label>Model</label>
+            <div class="form-grid">
 
-                        <input
-                            type="text"
-                            id="model"
-                            readonly
-                            placeholder="Otomatis"
-                        >
-                    </div>
-
-
-                    <!-- TYPE BD -->
-                    <div class="form-group">
-                        <label>Type BD</label>
-
-                        <select
-                            id="typeBD"
-                            required
-                        >
-                            <option value="">
-                                -- Pilih Type BD --
-                            </option>
-
-                            <option value="Breakdown Schedule">
-                                Breakdown Schedule
-                            </option>
-
-                            <option value="Unschedule">
-                                Unschedule
-                            </option>
-                        </select>
-                    </div>
-
-
-                    <!-- COMPONENT -->
-                    <div class="form-group">
-                        <label>Component</label>
-
-                        <input
-                            type="text"
-                            id="component"
-                            placeholder="Contoh: Engine"
-                            required
-                        >
-                    </div>
-
-
-                    <!-- STATUS -->
-                    <div class="form-group">
-                        <label>Status</label>
-
-                        <select
-                            id="status"
-                            required
-                        >
-                            <option value="Open">
-                                Open
-                            </option>
-
-                            <option value="Closed">
-                                Closed
-                            </option>
-                        </select>
-                    </div>
-
-
-                    <!-- JAM BREAKDOWN AWAL -->
-                    <div class="form-group">
-                        <label>Jam Breakdown Awal</label>
-
-                        <input
-                            type="time"
-                            id="jamAwal"
-                            required
-                        >
-                    </div>
-
-
-                    <!-- JAM BREAKDOWN AKHIR -->
-                    <div class="form-group">
-                        <label>Jam Breakdown Akhir</label>
-
-                        <input
-                            type="time"
-                            id="jamAkhir"
-                            required
-                        >
-                    </div>
-
-
-                    <!-- DOWNTIME -->
-                    <div class="form-group">
-                        <label>Downtime (Jam)</label>
-
-                        <input
-                            type="number"
-                            id="downtime"
-                            min="0"
-                            step="0.01"
-                            placeholder="Otomatis"
-                            readonly
-                            required
-                        >
-                    </div>
-
-
-                    <!-- HM AWAL -->
-                    <div class="form-group">
-                        <label>HM Awal</label>
-
-                        <input
-                            type="number"
-                            id="hmAwal"
-                            min="0"
-                            step="0.01"
-                            placeholder="0"
-                        >
-                    </div>
-
-
-                    <!-- PROBLEM -->
-                    <div class="form-group full">
-
-                        <label>Problem</label>
-
-                        <textarea
-                            id="problem"
-                            placeholder="Jelaskan problem breakdown"
-                            required
-                        ></textarea>
-
-                    </div>
-
-
-                    <!-- KETERANGAN -->
-                    <div class="form-group full">
-
-                        <label>Keterangan</label>
-
-                        <textarea
-                            id="keterangan"
-                            placeholder="Keterangan tambahan"
-                        ></textarea>
-
-                    </div>
-
+                <!-- TANGGAL -->
+                <div class="form-group">
+                    <label>Tanggal</label>
+                    <input type="date" id="tanggal" required>
                 </div>
 
 
-                <!-- BUTTON -->
-                <div class="button-area">
+                <!-- UNIT NO -->
+                <div class="form-group">
+                    <label>Unit No</label>
 
-                    <button
-                        type="submit"
-                        class="btn-primary"
-                        id="btnSimpan"
-                    >
-                        Simpan Breakdown
-                    </button>
-
-                    <button
-                        type="button"
-                        class="btn-secondary"
-                        onclick="resetForm()"
-                    >
-                        Reset
-                    </button>
-
+                    <select id="unitNo" required>
+                        <option value="">-- Pilih Unit --</option>
+                    </select>
                 </div>
 
-            </form>
 
-        </div>
+                <!-- MODEL -->
+                <div class="form-group">
+                    <label>Model</label>
 
-
-        <!-- TABLE DATA -->
-        <div class="card">
-
-            <h2>Data Breakdown</h2>
-
-            <div class="table-container">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>No</th>
-
-                            <th>Tanggal</th>
-
-                            <th>Unit No</th>
-
-                            <th>Model</th>
-
-                            <th>Type BD</th>
-
-                            <th>Component</th>
-
-                            <th>Jam Breakdown Awal</th>
-
-                            <th>Jam Breakdown Akhir</th>
-
-                            <th>Downtime</th>
-
-                            <th>HM Awal</th>
-
-                            <th>Problem</th>
-
-                            <th>Status</th>
-
-                            <th>Keterangan</th>
-
-                            <th>Aksi</th>
-
-                        </tr>
-
-                    </thead>
+                    <input
+                        type="text"
+                        id="model"
+                        readonly
+                        placeholder="Otomatis dari Master Unit"
+                    >
+                </div>
 
 
-                    <tbody id="breakdownTableBody">
+                <!-- TYPE BD -->
+                <div class="form-group">
+                    <label>Type BD</label>
 
-                    </tbody>
+                    <select id="typeBD" required>
+                        <option value="">-- Pilih Type BD --</option>
+                        <option value="Breakdown Schedule">
+                            Breakdown Schedule
+                        </option>
+                        <option value="Unschedule">
+                            Unschedule
+                        </option>
+                    </select>
+                </div>
 
-                </table>
+
+                <!-- COMPONENT -->
+                <div class="form-group">
+                    <label>Component</label>
+
+                    <input
+                        type="text"
+                        id="component"
+                        placeholder="Masukkan component"
+                        required
+                    >
+                </div>
+
+
+                <!-- STATUS -->
+                <div class="form-group">
+                    <label>Status</label>
+
+                    <select id="status" required>
+                        <option value="">-- Pilih Status --</option>
+                        <option value="Open">Open</option>
+                        <option value="Close">Close</option>
+                    </select>
+                </div>
+
+
+                <!-- JAM BREAKDOWN AWAL -->
+                <div class="form-group">
+                    <label>Jam Breakdown Awal</label>
+
+                    <input
+                        type="time"
+                        id="jamBreakdownAwal"
+                        required
+                    >
+                </div>
+
+
+                <!-- JAM BREAKDOWN AKHIR -->
+                <div class="form-group">
+                    <label>Jam Breakdown Akhir</label>
+
+                    <input
+                        type="time"
+                        id="jamBreakdownAkhir"
+                    >
+                </div>
+
+
+                <!-- DOWNTIME -->
+                <div class="form-group">
+                    <label>Downtime (Jam)</label>
+
+                    <input
+                        type="number"
+                        id="downtime"
+                        readonly
+                        step="0.01"
+                        placeholder="Otomatis"
+                    >
+                </div>
+
+
+                <!-- HM AWAL -->
+                <div class="form-group">
+                    <label>HM Awal</label>
+
+                    <input
+                        type="number"
+                        id="hmAwal"
+                        step="0.01"
+                        min="0"
+                        placeholder="Masukkan HM Awal"
+                    >
+                </div>
+
+
+                <!-- PROBLEM -->
+                <div class="form-group">
+                    <label>Problem</label>
+
+                    <input
+                        type="text"
+                        id="problem"
+                        placeholder="Masukkan problem"
+                        required
+                    >
+                </div>
+
+
+                <!-- ACTION JOB -->
+                <div class="form-group">
+                    <label>Action Job</label>
+
+                    <input
+                        type="text"
+                        id="actionJob"
+                        placeholder="Masukkan action job"
+                    >
+                </div>
 
             </div>
 
+
+            <!-- BUTTON -->
+            <div class="button-group">
+
+                <button
+                    type="submit"
+                    class="btn-save"
+                    id="saveButton"
+                >
+                    Simpan
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-reset"
+                    onclick="resetForm()"
+                >
+                    Reset
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- TABLE -->
+    <div class="card">
+
+        <h2>Data Breakdown</h2>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Unit No</th>
+                        <th>Model</th>
+                        <th>Type BD</th>
+                        <th>Component</th>
+                        <th>Status</th>
+                        <th>Jam Awal</th>
+                        <th>Jam Akhir</th>
+                        <th>Downtime (Jam)</th>
+                        <th>HM Awal</th>
+                        <th>Problem</th>
+                        <th>Action Job</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody id="breakdownTableBody"></tbody>
+
+            </table>
+
         </div>
 
-    </main>
+    </div>
+
+</div>
 
 
-    <script>
+<script>
+
+    /* ================================
+       LOCAL STORAGE
+    ================================= */
+
+    let units =
+        JSON.parse(localStorage.getItem("cmms_units")) || [];
+
+    let breakdowns =
+        JSON.parse(localStorage.getItem("cmms_breakdowns")) || [];
+
+    let editIndex = -1;
+
+
+    /* ================================
+       LOAD UNIT DARI MASTER UNIT
+    ================================= */
+
+    function loadUnits() {
+
+        const unitSelect =
+            document.getElementById("unitNo");
+
+        unitSelect.innerHTML =
+            '<option value="">-- Pilih Unit --</option>';
+
+        units.forEach(function(unit) {
+
+            const option =
+                document.createElement("option");
+
+            /*
+             * PENTING:
+             * Master Unit menggunakan codeUnit
+             */
+            option.value =
+                unit.codeUnit;
+
+            option.textContent =
+                unit.codeUnit;
+
+            unitSelect.appendChild(option);
+
+        });
+    }
+
+
+    /* ================================
+       UNIT DIPILIH
+       MODEL OTOMATIS
+    ================================= */
+
+    document
+        .getElementById("unitNo")
+        .addEventListener("change", function() {
+
+            const selectedUnit =
+                this.value;
+
+            const unit =
+                units.find(function(item) {
+
+                    return item.codeUnit === selectedUnit;
+
+                });
+
+            if (unit) {
+
+                document.getElementById("model").value =
+                    unit.model || "";
+
+            } else {
+
+                document.getElementById("model").value =
+                    "";
+
+            }
+
+        });
+
+
+    /* ================================
+       HITUNG DOWNTIME
+    ================================= */
+
+    function calculateDowntime() {
+
+        const start =
+            document.getElementById(
+                "jamBreakdownAwal"
+            ).value;
+
+        const end =
+            document.getElementById(
+                "jamBreakdownAkhir"
+            ).value;
+
+        const downtimeInput =
+            document.getElementById(
+                "downtime"
+            );
+
+        if (!start || !end) {
+
+            downtimeInput.value = "";
+
+            return;
+        }
+
+
+        const startParts =
+            start.split(":");
+
+        const endParts =
+            end.split(":");
+
+
+        let startMinutes =
+            parseInt(startParts[0]) * 60 +
+            parseInt(startParts[1]);
+
+        let endMinutes =
+            parseInt(endParts[0]) * 60 +
+            parseInt(endParts[1]);
+
 
         /*
-        =====================================================
-        MASTER UNIT
-        =====================================================
-        */
+         * Jika jam akhir lebih kecil
+         * berarti melewati tengah malam.
+         */
+        if (endMinutes < startMinutes) {
 
-        let units =
-            JSON.parse(
-                localStorage.getItem("cmms_units")
-            ) || [];
-
-
-        /*
-        =====================================================
-        DATA BREAKDOWN
-        =====================================================
-        */
-
-        let breakdowns =
-            JSON.parse(
-                localStorage.getItem("cmms_breakdowns")
-            ) || [];
-
-
-        /*
-        =====================================================
-        EDIT MODE
-        =====================================================
-        */
-
-        let editIndex = -1;
-
-
-        /*
-        =====================================================
-        LOAD UNIT KE DROPDOWN
-        =====================================================
-        */
-
-        function loadUnits() {
-
-            const unitSelect =
-                document.getElementById("unitNo");
-
-            unitSelect.innerHTML =
-                '<option value="">-- Pilih Unit --</option>';
-
-            units.forEach(function(unit) {
-
-                const option =
-                    document.createElement("option");
-
-                option.value =
-                    unit.unitNo;
-
-                option.textContent =
-                    unit.unitNo;
-
-                unitSelect.appendChild(option);
-
-            });
+            endMinutes += 24 * 60;
 
         }
 
 
-        /*
-        =====================================================
-        UNIT DIPILIH
-        MODEL OTOMATIS
-        =====================================================
-        */
-
-        document
-            .getElementById("unitNo")
-            .addEventListener("change", function() {
-
-                const selectedUnit =
-                    this.value;
-
-                const unit =
-                    units.find(function(item) {
-
-                        return item.unitNo === selectedUnit;
-
-                    });
+        const difference =
+            endMinutes - startMinutes;
 
 
-                if (unit) {
-
-                    document
-                        .getElementById("model")
-                        .value =
-                        unit.model || "";
-
-                } else {
-
-                    document
-                        .getElementById("model")
-                        .value = "";
-
-                }
-
-            });
+        const downtime =
+            difference / 60;
 
 
-        /*
-        =====================================================
-        HITUNG DOWNTIME
-        =====================================================
-        */
+        downtimeInput.value =
+            downtime.toFixed(2);
 
-        function hitungDowntime() {
-
-            const jamAwal =
-                document
-                    .getElementById("jamAwal")
-                    .value;
-
-            const jamAkhir =
-                document
-                    .getElementById("jamAkhir")
-                    .value;
-
-            const downtimeInput =
-                document
-                    .getElementById("downtime");
+    }
 
 
-            if (!jamAwal || !jamAkhir) {
+    document
+        .getElementById("jamBreakdownAwal")
+        .addEventListener(
+            "change",
+            calculateDowntime
+        );
 
-                downtimeInput.value = "";
+
+    document
+        .getElementById("jamBreakdownAkhir")
+        .addEventListener(
+            "change",
+            calculateDowntime
+        );
+
+
+    /* ================================
+       FORM SUBMIT
+    ================================= */
+
+    document
+        .getElementById("breakdownForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            const tanggal =
+                document.getElementById(
+                    "tanggal"
+                ).value;
+
+            const unitNo =
+                document.getElementById(
+                    "unitNo"
+                ).value;
+
+            const model =
+                document.getElementById(
+                    "model"
+                ).value;
+
+            const typeBD =
+                document.getElementById(
+                    "typeBD"
+                ).value;
+
+            const component =
+                document.getElementById(
+                    "component"
+                ).value;
+
+            const status =
+                document.getElementById(
+                    "status"
+                ).value;
+
+            const jamBreakdownAwal =
+                document.getElementById(
+                    "jamBreakdownAwal"
+                ).value;
+
+            const jamBreakdownAkhir =
+                document.getElementById(
+                    "jamBreakdownAkhir"
+                ).value;
+
+            const downtime =
+                document.getElementById(
+                    "downtime"
+                ).value;
+
+            const hmAwal =
+                document.getElementById(
+                    "hmAwal"
+                ).value;
+
+            const problem =
+                document.getElementById(
+                    "problem"
+                ).value;
+
+            const actionJob =
+                document.getElementById(
+                    "actionJob"
+                ).value;
+
+
+            /* ============================
+               VALIDASI
+            ============================ */
+
+            if (!tanggal ||
+                !unitNo ||
+                !model ||
+                !typeBD ||
+                !component ||
+                !status ||
+                !jamBreakdownAwal ||
+                !problem) {
+
+                alert(
+                    "Mohon lengkapi data yang wajib diisi."
+                );
 
                 return;
             }
-
-
-            const awalParts =
-                jamAwal
-                    .split(":")
-                    .map(Number);
-
-            const akhirParts =
-                jamAkhir
-                    .split(":")
-                    .map(Number);
-
-
-            let awal =
-                (awalParts[0] * 60)
-                + awalParts[1];
-
-
-            let akhir =
-                (akhirParts[0] * 60)
-                + akhirParts[1];
 
 
             /*
-            Jika jam akhir lebih kecil
-            berarti melewati tengah malam
-            */
+             * Kalau jam akhir diisi,
+             * hitung downtime.
+             */
+            if (jamBreakdownAkhir) {
 
-            if (akhir < awal) {
-
-                akhir += 24 * 60;
+                calculateDowntime();
 
             }
 
 
-            const selisihMenit =
-                akhir - awal;
+            const data = {
 
+                tanggal: tanggal,
 
-            const downtime =
-                selisihMenit / 60;
+                unitNo: unitNo,
 
+                model: model,
 
-            downtimeInput.value =
-                downtime.toFixed(2);
+                typeBD: typeBD,
 
-        }
+                component: component,
 
+                status: status,
 
-        document
-            .getElementById("jamAwal")
-            .addEventListener(
-                "change",
-                hitungDowntime
-            );
+                jamBreakdownAwal:
+                    jamBreakdownAwal,
 
+                jamBreakdownAkhir:
+                    jamBreakdownAkhir,
 
-        document
-            .getElementById("jamAkhir")
-            .addEventListener(
-                "change",
-                hitungDowntime
-            );
+                downtime:
+                    document.getElementById(
+                        "downtime"
+                    ).value,
 
+                hmAwal: hmAwal,
 
-        /*
-        =====================================================
-        SIMPAN DATA
-        =====================================================
-        */
+                problem: problem,
 
-        document
-            .getElementById("breakdownForm")
-            .addEventListener(
-                "submit",
-                function(event) {
+                actionJob: actionJob
 
-                    event.preventDefault();
+            };
 
 
-                    const tanggal =
-                        document
-                            .getElementById("tanggal")
-                            .value;
+            /* ============================
+               EDIT
+            ============================ */
 
+            if (editIndex !== -1) {
 
-                    const unitNo =
-                        document
-                            .getElementById("unitNo")
-                            .value;
+                breakdowns[editIndex] =
+                    data;
 
+                editIndex = -1;
 
-                    const model =
-                        document
-                            .getElementById("model")
-                            .value;
-
-
-                    const typeBD =
-                        document
-                            .getElementById("typeBD")
-                            .value;
-
-
-                    const component =
-                        document
-                            .getElementById("component")
-                            .value
-                            .trim();
-
-
-                    const jamAwal =
-                        document
-                            .getElementById("jamAwal")
-                            .value;
-
-
-                    const jamAkhir =
-                        document
-                            .getElementById("jamAkhir")
-                            .value;
-
-
-                    const downtime =
-                        Number(
-                            document
-                                .getElementById("downtime")
-                                .value
-                        );
-
-
-                    const hmAwal =
-                        Number(
-                            document
-                                .getElementById("hmAwal")
-                                .value || 0
-                        );
-
-
-                    const problem =
-                        document
-                            .getElementById("problem")
-                            .value
-                            .trim();
-
-
-                    const status =
-                        document
-                            .getElementById("status")
-                            .value;
-
-
-                    const keterangan =
-                        document
-                            .getElementById("keterangan")
-                            .value
-                            .trim();
-
-
-                    /*
-                    =====================================================
-                    VALIDASI
-                    =====================================================
-                    */
-
-                    if (
-                        !tanggal ||
-                        !unitNo ||
-                        !model ||
-                        !typeBD ||
-                        !component ||
-                        !jamAwal ||
-                        !jamAkhir ||
-                        !problem
-                    ) {
-
-                        alert(
-                            "Mohon lengkapi data yang wajib diisi."
-                        );
-
-                        return;
-                    }
-
-
-                    if (jamAwal === jamAkhir) {
-
-                        alert(
-                            "Jam Breakdown Awal dan Jam Breakdown Akhir tidak boleh sama."
-                        );
-
-                        return;
-                    }
-
-
-                    if (downtime <= 0) {
-
-                        alert(
-                            "Downtime harus lebih dari 0 jam."
-                        );
-
-                        return;
-                    }
-
-
-                    /*
-                    =====================================================
-                    OBJECT DATA
-                    =====================================================
-                    */
-
-                    const data = {
-
-                        tanggal:
-                            tanggal,
-
-                        unitNo:
-                            unitNo,
-
-                        model:
-                            model,
-
-                        typeBD:
-                            typeBD,
-
-                        component:
-                            component,
-
-                        jamAwal:
-                            jamAwal,
-
-                        jamAkhir:
-                            jamAkhir,
-
-                        downtime:
-                            downtime,
-
-                        hmAwal:
-                            hmAwal,
-
-                        problem:
-                            problem,
-
-                        status:
-                            status,
-
-                        keterangan:
-                            keterangan
-
-                    };
-
-
-                    /*
-                    =====================================================
-                    EDIT DATA
-                    =====================================================
-                    */
-
-                    if (editIndex !== -1) {
-
-                        breakdowns[editIndex] =
-                            data;
-
-                        editIndex = -1;
-
-
-                        document
-                            .getElementById(
-                                "btnSimpan"
-                            )
-                            .textContent =
-                            "Simpan Breakdown";
-
-                    }
-
-
-                    /*
-                    =====================================================
-                    DATA BARU
-                    =====================================================
-                    */
-
-                    else {
-
-                        breakdowns.push(data);
-
-                    }
-
-
-                    /*
-                    =====================================================
-                    SIMPAN LOCAL STORAGE
-                    =====================================================
-                    */
-
-                    localStorage.setItem(
-                        "cmms_breakdowns",
-                        JSON.stringify(
-                            breakdowns
-                        )
-                    );
-
-
-                    /*
-                    =====================================================
-                    REFRESH TABLE
-                    =====================================================
-                    */
-
-                    renderBreakdowns();
-
-
-                    /*
-                    =====================================================
-                    RESET
-                    =====================================================
-                    */
-
-                    resetForm();
-
-
-                    alert(
-                        "Data breakdown berhasil disimpan."
-                    );
-
-                }
-            );
-
-
-        /*
-        =====================================================
-        TAMPILKAN DATA
-        =====================================================
-        */
-
-        function renderBreakdowns() {
-
-            const tbody =
                 document.getElementById(
-                    "breakdownTableBody"
-                );
-
-
-            tbody.innerHTML = "";
-
-
-            if (breakdowns.length === 0) {
-
-                tbody.innerHTML = `
-
-                    <tr>
-
-                        <td
-                            colspan="14"
-                            style="
-                                text-align:center;
-                                padding:20px;
-                            "
-                        >
-                            Belum ada data breakdown
-                        </td>
-
-                    </tr>
-
-                `;
-
-                return;
-            }
-
-
-            breakdowns.forEach(
-                function(data, index) {
-
-                    const row =
-                        document.createElement("tr");
-
-
-                    const statusClass =
-                        data.status === "Closed"
-                            ? "status-closed"
-                            : "status-open";
-
-
-                    row.innerHTML = `
-
-                        <td>
-                            ${index + 1}
-                        </td>
-
-                        <td>
-                            ${data.tanggal}
-                        </td>
-
-                        <td>
-                            ${data.unitNo}
-                        </td>
-
-                        <td>
-                            ${data.model}
-                        </td>
-
-                        <td>
-                            ${data.typeBD}
-                        </td>
-
-                        <td>
-                            ${data.component}
-                        </td>
-
-                        <td>
-                            ${data.jamAwal || "-"}
-                        </td>
-
-                        <td>
-                            ${data.jamAkhir || "-"}
-                        </td>
-
-                        <td>
-                            ${Number(
-                                data.downtime || 0
-                            ).toFixed(2)}
-                        </td>
-
-                        <td>
-                            ${data.hmAwal || 0}
-                        </td>
-
-                        <td>
-                            ${data.problem}
-                        </td>
-
-                        <td class="${statusClass}">
-                            ${data.status}
-                        </td>
-
-                        <td>
-                            ${data.keterangan || "-"}
-                        </td>
-
-                        <td>
-
-                            <button
-                                class="btn-edit"
-                                onclick="
-                                    editBreakdown(
-                                        ${index}
-                                    )
-                                "
-                            >
-                                Edit
-                            </button>
-
-
-                            <button
-                                class="btn-delete"
-                                onclick="
-                                    deleteBreakdown(
-                                        ${index}
-                                    )
-                                "
-                            >
-                                Hapus
-                            </button>
-
-                        </td>
-
-                    `;
-
-
-                    tbody.appendChild(row);
-
-                }
-            );
-
-        }
-
-
-        /*
-        =====================================================
-        EDIT DATA
-        =====================================================
-        */
-
-        function editBreakdown(index) {
-
-            const data =
-                breakdowns[index];
-
-
-            document
-                .getElementById("tanggal")
-                .value =
-                data.tanggal || "";
-
-
-            document
-                .getElementById("unitNo")
-                .value =
-                data.unitNo || "";
-
-
-            document
-                .getElementById("model")
-                .value =
-                data.model || "";
-
-
-            document
-                .getElementById("typeBD")
-                .value =
-                data.typeBD || "";
-
-
-            document
-                .getElementById("component")
-                .value =
-                data.component || "";
-
-
-            document
-                .getElementById("jamAwal")
-                .value =
-                data.jamAwal || "";
-
-
-            document
-                .getElementById("jamAkhir")
-                .value =
-                data.jamAkhir || "";
-
-
-            document
-                .getElementById("downtime")
-                .value =
-                data.downtime || "";
-
-
-            document
-                .getElementById("hmAwal")
-                .value =
-                data.hmAwal || "";
-
-
-            document
-                .getElementById("problem")
-                .value =
-                data.problem || "";
-
-
-            document
-                .getElementById("status")
-                .value =
-                data.status || "Open";
-
-
-            document
-                .getElementById("keterangan")
-                .value =
-                data.keterangan || "";
-
-
-            editIndex =
-                index;
-
-
-            document
-                .getElementById("btnSimpan")
-                .textContent =
-                "Update Breakdown";
-
-
-            window.scrollTo({
-
-                top: 0,
-
-                behavior: "smooth"
-
-            });
-
-        }
-
-
-        /*
-        =====================================================
-        HAPUS DATA
-        =====================================================
-        */
-
-        function deleteBreakdown(index) {
-
-            const yakin =
-                confirm(
-                    "Apakah Anda yakin ingin menghapus data ini?"
-                );
-
-
-            if (!yakin) {
-
-                return;
+                    "saveButton"
+                ).textContent = "Simpan";
 
             }
 
+            /* ============================
+               TAMBAH DATA BARU
+            ============================ */
 
-            breakdowns.splice(
-                index,
-                1
-            );
+            else {
+
+                breakdowns.push(data);
+
+            }
 
 
             localStorage.setItem(
                 "cmms_breakdowns",
-                JSON.stringify(
-                    breakdowns
-                )
+                JSON.stringify(breakdowns)
             );
 
 
-            renderBreakdowns();
+            renderTable();
+
+            resetForm();
+
+
+            alert(
+                "Data breakdown berhasil disimpan."
+            );
+
+        });
+
+
+    /* ================================
+       RENDER TABLE
+    ================================= */
+
+    function renderTable() {
+
+        const tbody =
+            document.getElementById(
+                "breakdownTableBody"
+            );
+
+        tbody.innerHTML = "";
+
+
+        if (breakdowns.length === 0) {
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="14" class="empty">
+                        Belum ada data breakdown
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        breakdowns.forEach(function(item, index) {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>${index + 1}</td>
+
+                <td>
+                    ${item.tanggal || ""}
+                </td>
+
+                <td>
+                    ${item.unitNo || ""}
+                </td>
+
+                <td>
+                    ${item.model || ""}
+                </td>
+
+                <td>
+                    ${item.typeBD || ""}
+                </td>
+
+                <td>
+                    ${item.component || ""}
+                </td>
+
+                <td>
+                    ${item.status || ""}
+                </td>
+
+                <td>
+                    ${item.jamBreakdownAwal || ""}
+                </td>
+
+                <td>
+                    ${item.jamBreakdownAkhir || ""}
+                </td>
+
+                <td>
+                    ${item.downtime || ""}
+                </td>
+
+                <td>
+                    ${item.hmAwal || ""}
+                </td>
+
+                <td>
+                    ${item.problem || ""}
+                </td>
+
+                <td>
+                    ${item.actionJob || ""}
+                </td>
+
+                <td>
+
+                    <button
+                        class="btn-edit"
+                        onclick="editData(${index})"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="btn-delete"
+                        onclick="deleteData(${index})"
+                    >
+                        Hapus
+                    </button>
+
+                </td>
+            `;
+
+
+            tbody.appendChild(row);
+
+        });
+
+    }
+
+
+    /* ================================
+       EDIT DATA
+    ================================= */
+
+    function editData(index) {
+
+        const item =
+            breakdowns[index];
+
+        editIndex = index;
+
+
+        document.getElementById(
+            "tanggal"
+        ).value =
+            item.tanggal || "";
+
+
+        document.getElementById(
+            "unitNo"
+        ).value =
+            item.unitNo || "";
+
+
+        /*
+         * Cari model berdasarkan Unit
+         */
+        const unit =
+            units.find(function(unit) {
+
+                return unit.codeUnit === item.unitNo;
+
+            });
+
+
+        if (unit) {
+
+            document.getElementById(
+                "model"
+            ).value =
+                unit.model || item.model || "";
+
+        } else {
+
+            document.getElementById(
+                "model"
+            ).value =
+                item.model || "";
 
         }
 
 
-        /*
-        =====================================================
-        RESET FORM
-        =====================================================
-        */
-
-        function resetForm() {
-
-            document
-                .getElementById(
-                    "breakdownForm"
-                )
-                .reset();
+        document.getElementById(
+            "typeBD"
+        ).value =
+            item.typeBD || "";
 
 
-            document
-                .getElementById(
-                    "model"
-                )
-                .value = "";
+        document.getElementById(
+            "component"
+        ).value =
+            item.component || "";
 
 
-            document
-                .getElementById(
-                    "downtime"
-                )
-                .value = "";
+        document.getElementById(
+            "status"
+        ).value =
+            item.status || "";
 
 
-            editIndex = -1;
+        document.getElementById(
+            "jamBreakdownAwal"
+        ).value =
+            item.jamBreakdownAwal || "";
 
 
-            document
-                .getElementById(
-                    "btnSimpan"
-                )
-                .textContent =
-                "Simpan Breakdown";
+        document.getElementById(
+            "jamBreakdownAkhir"
+        ).value =
+            item.jamBreakdownAkhir || "";
+
+
+        document.getElementById(
+            "downtime"
+        ).value =
+            item.downtime || "";
+
+
+        document.getElementById(
+            "hmAwal"
+        ).value =
+            item.hmAwal || "";
+
+
+        document.getElementById(
+            "problem"
+        ).value =
+            item.problem || "";
+
+
+        document.getElementById(
+            "actionJob"
+        ).value =
+            item.actionJob || "";
+
+
+        document.getElementById(
+            "saveButton"
+        ).textContent =
+            "Update";
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /* ================================
+       DELETE DATA
+    ================================= */
+
+    function deleteData(index) {
+
+        const confirmDelete =
+            confirm(
+                "Yakin ingin menghapus data breakdown ini?"
+            );
+
+
+        if (!confirmDelete) {
+
+            return;
 
         }
 
 
-        /*
-        =====================================================
-        LOAD SAAT HALAMAN DIBUKA
-        =====================================================
-        */
+        breakdowns.splice(index, 1);
 
-        loadUnits();
 
-        renderBreakdowns();
+        localStorage.setItem(
+            "cmms_breakdowns",
+            JSON.stringify(breakdowns)
+        );
 
-    </script>
+
+        renderTable();
+
+    }
+
+
+    /* ================================
+       RESET FORM
+    ================================= */
+
+    function resetForm() {
+
+        document
+            .getElementById(
+                "breakdownForm"
+            )
+            .reset();
+
+
+        document.getElementById(
+            "model"
+        ).value = "";
+
+
+        document.getElementById(
+            "downtime"
+        ).value = "";
+
+
+        editIndex = -1;
+
+
+        document.getElementById(
+            "saveButton"
+        ).textContent =
+            "Simpan";
+
+    }
+
+
+    /* ================================
+       LOAD AWAL
+    ================================= */
+
+    loadUnits();
+
+    renderTable();
+
+</script>
 
 </body>
 </html>
