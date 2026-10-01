@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hours Meter - CMMS BD</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    color: #333;
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    background: #111827;
+    color: white;
+    padding-top: 20px;
+}
+
+.logo {
+    text-align: center;
+    padding: 10px 15px 25px;
+    border-bottom: 1px solid #374151;
+}
+
+.logo h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.logo p {
+    margin: 5px 0 0;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.menu {
+    padding-top: 15px;
+}
+
+.menu a {
+    display: block;
+    padding: 14px 22px;
+    color: #d1d5db;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.menu a:hover {
+    background: #1f2937;
+    color: white;
+}
+
+.menu a.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* CONTENT */
+.content {
+    margin-left: 240px;
+    padding: 25px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.header p {
+    color: #6b7280;
+    margin-top: 6px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 22px;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+/* FORM */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+input,
+select {
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+/* TABLE */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th,
+td {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    font-size: 13px;
+}
+
+th {
+    background: #1f2937;
+    color: white;
+}
+
+.btn-edit {
+    background: #f59e0b;
+    margin: 0;
+    padding: 6px 10px;
+}
+
+.btn-delete {
+    background: #dc2626;
+    margin: 0;
+    padding: 6px 10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        <h2>CMMS BD</h2>
+        <p>Maintenance System</p>
+    </div>
+
+    <div class="menu">
+
+        <a href="index.html">
+            Dashboard
+        </a>
+
+        <a href="master-unit.html">
+            Master Unit
+        </a>
+
+        <a href="hours-meter.html" class="active">
+            Hours Meter
+        </a>
+
+        <a href="breakdown.html">
+            Breakdown
+        </a>
+
+        <a href="historical-unit-bd.html">
+            Historical Unit BD
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- CONTENT -->
+
+<div class="content">
+
+    <div class="header">
+
+        <h1>Hours Meter</h1>
+
+        <p>
+            Input dan monitoring Hours Meter unit
+        </p>
+
+    </div>
+
+
+    <!-- INPUT -->
+
+    <div class="card">
+
+        <h2>Input Hours Meter</h2>
+
+        <form id="hmForm">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>Tanggal</label>
+
+                    <input
+                        type="date"
+                        id="tanggal"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Unit No</label>
+
+                    <select id="unitNo" required>
+
+                        <option value="">
+                            -- Pilih Unit --
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Model</label>
+
+                    <input
+                        type="text"
+                        id="model"
+                        readonly
+                        placeholder="Otomatis"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>HM Awal</label>
+
+                    <input
+                        type="number"
+                        id="hmAwal"
+                        step="0.01"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>HM Akhir</label>
+
+                    <input
+                        type="number"
+                        id="hmAkhir"
+                        step="0.01"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Running HM</label>
+
+                    <input
+                        type="number"
+                        id="runningHM"
+                        step="0.01"
+                        readonly
+                        placeholder="Otomatis"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button type="submit" id="saveButton">
+                Simpan
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- DATA -->
+
+    <div class="card">
+
+        <h2>Historical Hours Meter</h2>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Unit No</th>
+                        <th>Model</th>
+                        <th>HM Awal</th>
+                        <th>HM Akhir</th>
+                        <th>Running HM</th>
+                        <th>Aksi</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="hmTableBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   DATA
+========================= */
+
+let units =
+    JSON.parse(
+        localStorage.getItem("cmms_units")
+    ) || [];
+
+let hoursMeter =
+    JSON.parse(
+        localStorage.getItem("cmms_hours_meter")
+    ) || [];
+
+let editIndex = -1;
+
+
+/* =========================
+   LOAD UNIT
+========================= */
+
+function loadUnits() {
+
+    const select =
+        document.getElementById("unitNo");
+
+    select.innerHTML =
+        '<option value="">-- Pilih Unit --</option>';
+
+    units.forEach(function(unit) {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            unit.codeUnit;
+
+        option.textContent =
+            unit.codeUnit;
+
+        select.appendChild(option);
+
+    });
+
+}
+
+
+/* =========================
+   PILIH UNIT
+========================= */
+
+document
+.getElementById("unitNo")
+.addEventListener("change", function() {
+
+    const selectedUnit =
+        this.value;
+
+    const unit =
+        units.find(function(item) {
+
+            return item.codeUnit === selectedUnit;
+
+        });
+
+    if (unit) {
+
+        document.getElementById("model").value =
+            unit.model || "";
+
+    } else {
+
+        document.getElementById("model").value =
+            "";
+
+    }
+
+});
+
+
+/* =========================
+   HITUNG RUNNING HM
+========================= */
+
+function calculateHM() {
+
+    const hmAwal =
+        parseFloat(
+            document.getElementById("hmAwal").value
+        );
+
+    const hmAkhir =
+        parseFloat(
+            document.getElementById("hmAkhir").value
+        );
+
+    if (
+        isNaN(hmAwal) ||
+        isNaN(hmAkhir)
+    ) {
+
+        document.getElementById(
+            "runningHM"
+        ).value = "";
+
+        return;
+
+    }
+
+    const running =
+        hmAkhir - hmAwal;
+
+    if (running < 0) {
+
+        document.getElementById(
+            "runningHM"
+        ).value = "";
+
+        alert(
+            "HM Akhir tidak boleh lebih kecil dari HM Awal."
+        );
+
+        return;
+
+    }
+
+    document.getElementById(
+        "runningHM"
+    ).value =
+        running.toFixed(2);
+
+}
+
+
+document
+.getElementById("hmAwal")
+.addEventListener(
+    "input",
+    calculateHM
+);
+
+document
+.getElementById("hmAkhir")
+.addEventListener(
+    "input",
+    calculateHM
+);
+
+
+/* =========================
+   SIMPAN
+========================= */
+
+document
+.getElementById("hmForm")
+.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+        const tanggal =
+            document.getElementById(
+                "tanggal"
+            ).value;
+
+        const unitNo =
+            document.getElementById(
+                "unitNo"
+            ).value;
+
+        const model =
+            document.getElementById(
+                "model"
+            ).value;
+
+        const hmAwal =
+            parseFloat(
+                document.getElementById(
+                    "hmAwal"
+                ).value
+            );
+
+        const hmAkhir =
+            parseFloat(
+                document.getElementById(
+                    "hmAkhir"
+                ).value
+            );
+
+        const runningHM =
+            hmAkhir - hmAwal;
+
+
+        if (runningHM < 0) {
+
+            alert(
+                "HM Akhir tidak boleh lebih kecil dari HM Awal."
+            );
+
+            return;
+
+        }
+
+
+        const data = {
+
+            tanggal: tanggal,
+
+            unitNo: unitNo,
+
+            model: model,
+
+            hmAwal: hmAwal,
+
+            hmAkhir: hmAkhir,
+
+            runningHM: runningHM
+
+        };
+
+
+        if (editIndex !== -1) {
+
+            hoursMeter[editIndex] =
+                data;
+
+            editIndex = -1;
+
+            document.getElementById(
+                "saveButton"
+            ).textContent =
+                "Simpan";
+
+        } else {
+
+            hoursMeter.push(data);
+
+        }
+
+
+        localStorage.setItem(
+            "cmms_hours_meter",
+            JSON.stringify(hoursMeter)
+        );
+
+
+        renderTable();
+
+        resetForm();
+
+        alert(
+            "Data Hours Meter berhasil disimpan."
+        );
+
+    }
+);
+
+
+/* =========================
+   TABLE
+========================= */
+
+function renderTable() {
+
+    const tbody =
+        document.getElementById(
+            "hmTableBody"
+        );
+
+    tbody.innerHTML = "";
+
+
+    if (hoursMeter.length === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" style="text-align:center;">
+                    Belum ada data Hours Meter
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    hoursMeter.forEach(
+        function(item, index) {
+
+            const row =
+                document.createElement("tr");
+
+            row.innerHTML = `
+
+                <td>
+                    ${index + 1}
+                </td>
+
+                <td>
+                    ${item.tanggal || ""}
+                </td>
+
+                <td>
+                    ${item.unitNo || ""}
+                </td>
+
+                <td>
+                    ${item.model || ""}
+                </td>
+
+                <td>
+                    ${item.hmAwal || 0}
+                </td>
+
+                <td>
+                    ${item.hmAkhir || 0}
+                </td>
+
+                <td>
+                    ${item.runningHM || 0}
+                </td>
+
+                <td>
+
+                    <button
+                        class="btn-edit"
+                        onclick="editData(${index})"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="btn-delete"
+                        onclick="deleteData(${index})"
+                    >
+                        Hapus
+                    </button>
+
+                </td>
+
+            `;
+
+            tbody.appendChild(row);
+
+        }
+    );
+
+}
+
+
+/* =========================
+   EDIT
+========================= */
+
+function editData(index) {
+
+    const item =
+        hoursMeter[index];
+
+    editIndex = index;
+
+
+    document.getElementById(
+        "tanggal"
+    ).value =
+        item.tanggal || "";
+
+
+    document.getElementById(
+        "unitNo"
+    ).value =
+        item.unitNo || "";
+
+
+    document.getElementById(
+        "model"
+    ).value =
+        item.model || "";
+
+
+    document.getElementById(
+        "hmAwal"
+    ).value =
+        item.hmAwal || "";
+
+
+    document.getElementById(
+        "hmAkhir"
+    ).value =
+        item.hmAkhir || "";
+
+
+    document.getElementById(
+        "runningHM"
+    ).value =
+        item.runningHM || "";
+
+
+    document.getElementById(
+        "saveButton"
+    ).textContent =
+        "Update";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================
+   HAPUS
+========================= */
+
+function deleteData(index) {
+
+    if (
+        !confirm(
+            "Yakin ingin menghapus data Hours Meter ini?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    hoursMeter.splice(
+        index,
+        1
+    );
+
+
+    localStorage.setItem(
+        "cmms_hours_meter",
+        JSON.stringify(hoursMeter)
+    );
+
+
+    renderTable();
+
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+function resetForm() {
+
+    document
+        .getElementById("hmForm")
+        .reset();
+
+    document.getElementById(
+        "model"
+    ).value = "";
+
+    document.getElementById(
+        "runningHM"
+    ).value = "";
+
+    editIndex = -1;
+
+    document.getElementById(
+        "saveButton"
+    ).textContent =
+        "Simpan";
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadUnits();
+
+renderTable();
+
+</script>
+
+</body>
+</html>
